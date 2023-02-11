@@ -4,8 +4,8 @@
 #define PATH 2
 #define BOX 3
 #define GOAL 4
-#define SPAWN1 5
-#define SPAWN2 6
+#define SPAWN1 5 // red spawn
+#define SPAWN2 6 // blue spawn
 
 const char UP = 'u';
 const char DOWN = 'd';

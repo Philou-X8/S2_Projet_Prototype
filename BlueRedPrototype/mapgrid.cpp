@@ -51,7 +51,7 @@ int MapGrid::moveP1(PlayerPos dir) {
 	case SPAWN1:
 	case SPAWN2:
 	case PATH:
-		*p1 += dir;
+		if (newPos != *p2) *p1 += dir;
 		return 1;
 	case BOX:
 		return actionRed(dir);
@@ -71,7 +71,7 @@ int MapGrid::moveP2(PlayerPos dir) {
 	case SPAWN1:
 	case SPAWN2:
 	case PATH:
-		*p2 += dir;
+		if (newPos != *p1) *p2 += dir;
 		return 1;
 	case BOX:
 		return actionBlue(dir);
