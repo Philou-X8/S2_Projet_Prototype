@@ -23,6 +23,7 @@ public:
 	bool move(const int dx, const int dy);
 	bool move(const PlayerPos& p2);
 	bool operator==(const PlayerPos& p2);
+	bool operator!=(const PlayerPos& p2);
 	PlayerPos& operator=(const PlayerPos& p2);
 	PlayerPos& operator=(const PlayerPos* p2);
 	PlayerPos& operator+=(const PlayerPos& p2);

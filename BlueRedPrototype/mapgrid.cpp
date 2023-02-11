@@ -86,7 +86,7 @@ int MapGrid::moveP2(PlayerPos dir) {
 int MapGrid::actionRed(PlayerPos dir) {
 	PlayerPos posBox(*p1 + dir);
 	PlayerPos posBehindBox(posBox + dir);
-	if (mapGrid[posBehindBox.x][posBehindBox.y] == PATH) {
+	if ((mapGrid[posBehindBox.x][posBehindBox.y] == PATH) && (posBehindBox != *p2)) {
 		mapGrid[posBehindBox.x][posBehindBox.y] = BOX;
 		mapGrid[posBox.x][posBox.y] = PATH;
 		*p1 += dir;
@@ -97,7 +97,7 @@ int MapGrid::actionRed(PlayerPos dir) {
 int MapGrid::actionBlue(PlayerPos dir) {
 	PlayerPos posBox(*p2 + dir);
 	PlayerPos posBehindPly(*p2 - dir);
-	if (mapGrid[posBehindPly.x][posBehindPly.y] == PATH) {
+	if ((mapGrid[posBehindPly.x][posBehindPly.y] == PATH) && (posBehindPly != *p1)) {
 		mapGrid[p2->x][p2->y] = BOX;
 		mapGrid[posBox.x][posBox.y] = PATH;
 		*p2 -= dir;

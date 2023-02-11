@@ -6,6 +6,7 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include <string>
 #include "maploader.h"
 #include "mapgrid.h"
 
@@ -30,7 +31,7 @@ void main() {
 	// load map from file
 	MapLoader mapLoader;
 	mapLoader.blankMap();
-	mapLoader.loadMap(&map, p1, p2);
+	mapLoader.nextLvl(&map, p1, p2);
 	// send map to grid object
 	MapGrid grid(p1, p2);
 	grid.newGrid(map);
@@ -69,11 +70,21 @@ void main() {
 		case 'j':
 			grid.moveP2(PlayerPos(-1, 0));	// left
 			break;
+			// ------------------------------- options
+		case 'r': // restart lvl
+			mapLoader.resetLvl(&map, p1, p2);
+			grid.newGrid(map);
+			grid.placePlayers(p1, p2);
+			gotoxy(0, 0);
+			std::cout << grid;
+			break;
+		default:
+			break;
 		}
 		gotoxy(0, 0);
 		std::cout << grid;
 		if (grid.mapSolved()) {
-			mapLoader.loadMap(&map, p1, p2);
+			mapLoader.nextLvl(&map, p1, p2);
 			grid.newGrid(map);
 			grid.placePlayers(p1, p2);
 			gotoxy(0, 0);

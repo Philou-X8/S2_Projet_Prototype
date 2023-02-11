@@ -38,6 +38,11 @@ bool PlayerPos::operator==(const PlayerPos& p2) {
 	if (y != p2.y) equal = false;
 	return equal;
 }
+bool PlayerPos::operator!=(const PlayerPos& p2) {
+	if (x != p2.x) return true;
+	if (y != p2.y) return true;
+	return false;
+}
 
 PlayerPos& PlayerPos::operator=(const PlayerPos& p2) {
 	setPos(p2);
