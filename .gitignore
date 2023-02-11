@@ -30,6 +30,6 @@
 *.exe
 *.out
 *.app
-/.vs
-/debug
-/release
+/BlueRedPrototype/.vs
+/BlueRedPrototype/debug
+/BlueRedPrototype/release
