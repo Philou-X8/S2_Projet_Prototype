@@ -40,7 +40,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="hours.txt">
+    <Text Include="..\hours.txt">
       <Filter>Fichiers d%27en-tête</Filter>
     </Text>
   </ItemGroup>

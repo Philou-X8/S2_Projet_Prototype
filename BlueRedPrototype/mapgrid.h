@@ -5,11 +5,9 @@
 */
 #pragma once
 
-
 #include <iostream>
 #include <Windows.h>
 #include "position.h"
-
 
 using namespace std;
 

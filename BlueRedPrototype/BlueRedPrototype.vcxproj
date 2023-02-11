@@ -150,7 +150,7 @@
     <ClInclude Include="position.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="hours.txt" />
+    <Text Include="..\hours.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
