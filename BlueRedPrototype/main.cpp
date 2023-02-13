@@ -22,8 +22,16 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(h, c);
 }
 
+void ShowCursor(bool show) {
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO cursorInfo;
+	GetConsoleCursorInfo(out, &cursorInfo);
+	cursorInfo.bVisible = show;
+	SetConsoleCursorInfo(out, &cursorInfo);
+}
 
 void main() {
+	ShowCursor(false);
 	
 	int map[20][20] = { 0 };
 	PlayerPos* p1 = new PlayerPos();
@@ -91,4 +99,5 @@ void main() {
 			std::cout << grid;
 		}
 	}
+	ShowCursor(true);
 }
