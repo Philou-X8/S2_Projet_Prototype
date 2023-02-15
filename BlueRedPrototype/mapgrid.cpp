@@ -6,8 +6,8 @@ MapGrid::MapGrid() {
 			mapGrid[i][j] = 0;
 		}
 	}
-	p1 = new PlayerPos();
-	p2 = new PlayerPos();
+	p1 = nullptr;
+	p2 = nullptr;
 	goalP1 = false;
 	goalP2 = false;
 }

@@ -20,7 +20,8 @@ public:
 	bool nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2);
 	bool loadMap(int (*arr)[20][20], PlayerPos* p1, PlayerPos* p2);
 
-	void blankMap(); // creat a blank map for manual editing
+	// create a blank map for manual editing
+	void blankMap(); 
 private:
 	ifstream rFile;
 	string lvlPathName;

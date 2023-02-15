@@ -139,12 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="gamemanager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mapgrid.cpp" />
     <ClCompile Include="maploader.cpp" />
     <ClCompile Include="position.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gamemanager.h" />
     <ClInclude Include="mapgrid.h" />
     <ClInclude Include="maploader.h" />
     <ClInclude Include="position.h" />
