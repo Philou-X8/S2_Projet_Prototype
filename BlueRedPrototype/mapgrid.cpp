@@ -8,8 +8,6 @@ MapGrid::MapGrid() {
 	}
 	p1 = nullptr;
 	p2 = nullptr;
-	goalP1 = false;
-	goalP2 = false;
 }
 MapGrid::MapGrid(PlayerPos* p1pos, PlayerPos* p2pos) {
 	for (int i(0); i < 20; i++) {
@@ -19,8 +17,6 @@ MapGrid::MapGrid(PlayerPos* p1pos, PlayerPos* p2pos) {
 	}
 	p1 = p1pos;
 	p2 = p2pos;
-	goalP1 = false;
-	goalP2 = false;
 }
 
 int& MapGrid::getGrid(int x, int y) {
@@ -33,8 +29,6 @@ void MapGrid::newGrid(int arr[20][20]) {
 			mapGrid[i][j] = arr[i][j];
 		}
 	}
-	goalP1 = false;
-	goalP2 = false;
 }
 
 void MapGrid::placePlayers(PlayerPos* p1pos, PlayerPos* p2pos) {
@@ -43,7 +37,6 @@ void MapGrid::placePlayers(PlayerPos* p1pos, PlayerPos* p2pos) {
 }
 
 int MapGrid::moveP1(PlayerPos dir) {
-	goalP1 = false;
 	PlayerPos newPos(*p1 + dir);
 	switch (mapGrid[newPos.x][newPos.y]) {
 	case WALL:
@@ -57,13 +50,11 @@ int MapGrid::moveP1(PlayerPos dir) {
 		return actionRed(dir);
 	case GOAL:
 		*p1 += dir;
-		goalP1 = true;
 		return 2;
 	}
 	return 1;
 }
 int MapGrid::moveP2(PlayerPos dir) {
-	goalP2 = false;
 	PlayerPos newPos(*p2 + dir);
 	switch (mapGrid[newPos.x][newPos.y]) {
 	case WALL:
@@ -77,7 +68,6 @@ int MapGrid::moveP2(PlayerPos dir) {
 		return actionBlue(dir);
 	case GOAL:
 		*p2 += dir;
-		goalP2 = true;
 		return 2;
 	}
 	return 1;
@@ -107,7 +97,8 @@ int MapGrid::actionBlue(PlayerPos dir) {
 }
 
 bool MapGrid::mapSolved() {
-	return goalP1 && goalP2;
+	return (mapGrid[p1->x][p1->y] == GOAL) && (mapGrid[p2->x][p2->y] == GOAL);
+	
 }
 
 ostream& operator <<(ostream& s, MapGrid& grid) {

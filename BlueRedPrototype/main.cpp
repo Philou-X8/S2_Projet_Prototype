@@ -9,10 +9,11 @@
 #include <string>
 #include "maploader.h"
 #include "mapgrid.h"
+#include "gamemanager.h"
 
 using namespace std;
 
-
+/*
 void gotoxy(int x, int y)
 {
 	static HANDLE h = NULL;
@@ -29,8 +30,17 @@ void ShowCursor(bool show) {
 	cursorInfo.bVisible = show;
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
+*/
 
 void main() {
+	
+	GameManager gameWindow;
+	char inputchar = 0;
+	while (inputchar != 27) {
+		inputchar = _getch();
+		gameWindow.gameUpdate(inputchar);
+	}
+	/*
 	ShowCursor(false);
 	
 	int map[20][20] = { 0 };
@@ -100,4 +110,6 @@ void main() {
 		}
 	}
 	ShowCursor(true);
+
+	*/
 }

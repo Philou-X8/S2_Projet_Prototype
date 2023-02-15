@@ -31,5 +31,4 @@ private:
 	int mapGrid[20][20];
 	PlayerPos* p1;
 	PlayerPos* p2;
-	bool goalP1, goalP2;
 };

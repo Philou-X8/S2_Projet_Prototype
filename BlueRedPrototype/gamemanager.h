@@ -13,20 +13,20 @@ class GameManager
 public:
 	GameManager();
 
-	void gameUpdate(char input);
+	void gameUpdate(char inputKey);
 
 	/******************** map display ********************/
+	bool levelState(); 
 	void levelReload();
 	void levelNext();
 	void levelUpdateUI();
-	bool levelState();
 
 	/******************** input system ********************/
-	//char getInput();
-	void inputManager(char input);
 	void inputPlayerAction(char input);
-	void inputMapAction(char input);
-	void inputMenuAction(char input);
+	//char getInput();
+	//void inputManager(char input);
+	//void inputMapAction(char input);
+	//void inputMenuAction(char input);
 
 private:
 	// game related objects
@@ -35,9 +35,11 @@ private:
 	MapLoader mapLoader;
 	MapGrid grid;
 
+	void showLvlProgress();
+
 	/******************** console usage ********************/
 	HANDLE consoleHandle;
-	PCONSOLE_CURSOR_INFO cursorInfo;
+	CONSOLE_CURSOR_INFO cursorInfo;
 	void consoleXY(int x, int y);
 	void consoleHideCursor(bool hide);
 };

@@ -48,10 +48,12 @@ PlayerPos& PlayerPos::operator=(const PlayerPos& p2) {
 	setPos(p2);
 	return *this;
 }
+/*
 PlayerPos& PlayerPos::operator=(const PlayerPos* p2) {
 	setPos(*p2);
 	return *this;
 }
+*/
 PlayerPos& PlayerPos::operator+=(const PlayerPos& p2) {
 	move(p2);
 	return *this;

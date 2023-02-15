@@ -16,68 +16,26 @@ GameManager::GameManager() {
 
 	// initialize some console variables
 	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	GetConsoleCursorInfo(consoleHandle, cursorInfo);
+	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
+	consoleHideCursor(true);
+
+	showLvlProgress();
 }
 
-void GameManager::levelReload() {
-	int map[20][20] = { 0 };
-	mapLoader.resetLvl(&map, p1, p2);
-	grid.newGrid(map);
-	grid.placePlayers(p1, p2);
-}
-void GameManager::levelNext() {
-	int map[20][20] = { 0 };
-	mapLoader.nextLvl(&map, p1, p2);
-	grid.newGrid(map);
-	grid.placePlayers(p1, p2);
-}
-void GameManager::levelUpdateUI() {
-	consoleXY(0, 0);
-	std::cout << grid;
-}
-bool GameManager::levelState() {
-	return grid.mapSolved();
-}
-
-void GameManager::inputManager(char input) {
-	switch (input)
-	{
-	case 'r':
-		inputMapAction(input);
-		break;
-	case 'w':
-	case 's':
-	case 'd':
-	case 'a':
-	case 'i':
-	case 'k':
-	case 'l':
-	case 'j':
-		inputPlayerAction(input);
-		break;
-	default:
-		break;
+void GameManager::gameUpdate(char inputKey) {
+	inputPlayerAction(inputKey);
+	if (levelState()) {
+		levelNext();
+		showLvlProgress();
 	}
+	levelUpdateUI();
 }
-
-void GameManager::inputMapAction(char input) {
-	switch (input)
-	{
-	case 'r':
-		levelReload();
-		levelUpdateUI();
-		break;
-	default:
-		break;
-	}
-}
-
-void GameManager::inputMenuAction(char input) {
-
-}
-
 void GameManager::inputPlayerAction(char input) {
 	switch (input) {
+		// ------------------------------- menus
+	case 'r':
+		levelReload();
+		break;
 		// ------------------------------- player 1
 	case 'w':
 		grid.moveP1(PlayerPos(0, 1));	// up
@@ -107,12 +65,78 @@ void GameManager::inputPlayerAction(char input) {
 	}
 }
 
+bool GameManager::levelState() {
+	return grid.mapSolved();
+}
+void GameManager::levelReload() {
+	int map[20][20] = { 0 };
+	mapLoader.resetLvl(&map, p1, p2);
+	grid.newGrid(map);
+	grid.placePlayers(p1, p2);
+}
+void GameManager::levelNext() {
+	int map[20][20] = { 0 };
+	mapLoader.nextLvl(&map, p1, p2);
+	grid.newGrid(map);
+	grid.placePlayers(p1, p2);
+}
+void GameManager::levelUpdateUI() {
+	consoleXY(0, 0);
+	std::cout << grid;
+}
+/*
+void GameManager::inputManager(char input) {
+	switch (input)
+	{
+	case 'r':
+		inputMapAction(input);
+		break;
+	case 'w':
+	case 's':
+	case 'd':
+	case 'a':
+	case 'i':
+	case 'k':
+	case 'l':
+	case 'j':
+		inputPlayerAction(input);
+		break;
+	default:
+		break;
+	}
+}
+*/
+/*
+void GameManager::inputMapAction(char input) {
+	switch (input)
+	{
+	case 'r':
+		levelReload();
+		levelUpdateUI();
+		break;
+	default:
+		break;
+	}
+}
+*/
+/*
+void GameManager::inputMenuAction(char input) {
+
+}
+*/
+
+void GameManager::showLvlProgress() {
+	consoleXY(0, 22);
+	cout << "Current level: (level " << mapLoader.getLvlProgress() << ")";
+	consoleXY(0, 0);
+}
+
 void GameManager::consoleXY(int x, int y)
 {
 	COORD c = { x, y };
 	SetConsoleCursorPosition(consoleHandle, c);
 }
 void GameManager::consoleHideCursor(bool hide) {
-	cursorInfo->bVisible = !hide;
-	SetConsoleCursorInfo(consoleHandle, cursorInfo);
+	cursorInfo.bVisible = !hide;
+	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
 }

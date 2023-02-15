@@ -8,6 +8,11 @@ MapLoader::MapLoader() {
 MapLoader::~MapLoader() {
 
 }
+
+const int MapLoader::getLvlProgress() {
+	return lvlProgress;
+}
+
 bool MapLoader::resetLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 	return loadMap(arr, p1, p2);
 }
