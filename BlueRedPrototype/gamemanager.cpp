@@ -10,7 +10,7 @@ GameManager::GameManager() {
 	// send map to grid object
 	grid = MapGrid(p1, p2);
 	grid.newGrid(map);
-	grid.placePlayers(p1, p2);
+	//grid.placePlayers(p1, p2);
 	// display grid
 	std::cout << grid;
 
@@ -62,6 +62,8 @@ void GameManager::inputPlayerAction(char input) {
 	case 'j':
 		grid.moveP2(PlayerPos(-1, 0));	// left
 		break;
+	default:
+		break;
 	}
 }
 
@@ -84,6 +86,7 @@ void GameManager::levelUpdateUI() {
 	consoleXY(0, 0);
 	std::cout << grid;
 }
+
 /*
 void GameManager::inputManager(char input) {
 	switch (input)

@@ -32,13 +32,21 @@ bool MapLoader::loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 	int buffer;
 	rFile.open(lvlToLoad); // open file
 	if (rFile.is_open()) {
-		for (int y(19); y >= 0; y--) { // print top of grid first
+		for (int y(19); y >= 0; y--) { // read top of grid first
 			for (int x(0); x < 20; x++) {
+
 				rFile >> buffer; // read tile from file
 				(*arr)[x][y] = buffer; // add tile to map
+
 				// set player to their spawn
-				if (buffer == SPAWN1) *p1 = PlayerPos(x, y); 
-				if (buffer == SPAWN2) *p2 = PlayerPos(x, y);
+				if (buffer == SPAWN1) {
+					(*arr)[x][y] = PATH; // replace spawn block by a path block
+					*p1 = PlayerPos(x, y); // put ply1 on its spawn
+				} 
+				if (buffer == SPAWN2) {
+					(*arr)[x][y] = PATH; // replace spawn block by a path block
+					*p2 = PlayerPos(x, y); // put ply2 on its spawn
+				}
 			}
 		}
 		rFile.close();

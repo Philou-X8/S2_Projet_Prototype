@@ -51,6 +51,8 @@ int MapGrid::moveP1(PlayerPos dir) {
 	case GOAL:
 		*p1 += dir;
 		return 2;
+	default:
+		break;
 	}
 	return 1;
 }
@@ -69,6 +71,8 @@ int MapGrid::moveP2(PlayerPos dir) {
 	case GOAL:
 		*p2 += dir;
 		return 2;
+	default:
+		break;
 	}
 	return 1;
 }
@@ -98,7 +102,6 @@ int MapGrid::actionBlue(PlayerPos dir) {
 
 bool MapGrid::mapSolved() {
 	return (mapGrid[p1->x][p1->y] == GOAL) && (mapGrid[p2->x][p2->y] == GOAL);
-	
 }
 
 ostream& operator <<(ostream& s, MapGrid& grid) {
@@ -130,6 +133,8 @@ ostream& operator <<(ostream& s, MapGrid& grid) {
 					break;
 				case SPAWN2:
 					s << " . ";
+					break;
+				default:
 					break;
 				}
 			}
