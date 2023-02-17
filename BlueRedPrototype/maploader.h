@@ -16,8 +16,22 @@ class MapLoader
 public:
 	MapLoader();
 	~MapLoader();
+	/*
 	bool resetLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2);
 	bool nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2);
+	*/
+	bool resetLvl(
+		int(*arr)[20][20], 
+		PlayerPos* p1, 
+		PlayerPos* p2,
+		PlayerPos& mapSize
+	);
+	bool nextLvl(
+		int(*arr)[20][20], 
+		PlayerPos* p1, 
+		PlayerPos* p2,
+		PlayerPos& mapSize
+	);
 
 	const int getLvlProgress();
 	// create a blank map for manual editing
@@ -25,7 +39,7 @@ public:
 
 private:
 
-	bool loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2);
+	bool loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize);
 
 	ifstream rFile;
 	string lvlPathName;

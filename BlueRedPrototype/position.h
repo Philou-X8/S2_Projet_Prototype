@@ -25,7 +25,7 @@ public:
 	bool operator==(const PlayerPos& p2);
 	bool operator!=(const PlayerPos& p2);
 	PlayerPos& operator=(const PlayerPos& p2);
-	PlayerPos& operator=(const PlayerPos* p2);
+	//PlayerPos& operator=(const PlayerPos* p2);
 	PlayerPos& operator+=(const PlayerPos& p2);
 	PlayerPos& operator-=(const PlayerPos& p2);
 	PlayerPos operator+(const PlayerPos& p2);

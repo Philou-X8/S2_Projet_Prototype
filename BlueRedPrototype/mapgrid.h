@@ -16,9 +16,11 @@ class MapGrid
 public:
 	MapGrid();
 	MapGrid(PlayerPos* p1pos, PlayerPos* p2pos);
-	int& getGrid(int x, int y);
-	void newGrid(int arr[20][20]);
+	~MapGrid();
+	int& getTile(int x, int y);
+	void newGrid(int arr[20][20], PlayerPos newMapSize);
 	void placePlayers(PlayerPos* p1pos, PlayerPos* p2pos);
+	PlayerPos& editSize();
 	int moveP1(PlayerPos dir);
 	int moveP2(PlayerPos dir);
 	int actionRed(PlayerPos dir);
@@ -28,7 +30,9 @@ public:
 
 private:
 	
-	int mapGrid[20][20];
+	int grid[20][20];
+	PlayerPos mapSize;
+
 	PlayerPos* p1;
 	PlayerPos* p2;
 };

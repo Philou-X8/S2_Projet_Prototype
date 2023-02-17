@@ -45,7 +45,8 @@ bool PlayerPos::operator!=(const PlayerPos& p2) {
 }
 
 PlayerPos& PlayerPos::operator=(const PlayerPos& p2) {
-	setPos(p2);
+	x = p2.x;
+	y = p2.y;
 	return *this;
 }
 /*

@@ -12,13 +12,13 @@ MapLoader::~MapLoader() {
 const int MapLoader::getLvlProgress() {
 	return lvlProgress;
 }
-
+/*
 bool MapLoader::resetLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 	return loadMap(arr, p1, p2);
 }
 bool MapLoader::nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 	lvlProgress++;
-	if (loadMap(arr, p1, p2)) { 
+	if (loadMap(arr, p1, p2)) {
 		return true; // loading next level successful 
 	}
 	else {
@@ -26,7 +26,26 @@ bool MapLoader::nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 		return false; // loading next level failed 
 	}
 }
-bool MapLoader::loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
+*/
+bool MapLoader::resetLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize) {
+	return loadMap(arr, p1, p2, mapSize);
+}
+bool MapLoader::nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize) {
+	lvlProgress++;
+	if (loadMap(arr, p1, p2, mapSize)) {
+		return true; // loading next level successful 
+	}
+	else {
+		lvlProgress--;
+		return false; // loading next level failed 
+	}
+}
+
+bool MapLoader::loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize) {
+	int leftEdge = 19;
+	int rightEdge = 0;
+	int lowEdge = 19;
+	int topEdge = 0;
 	// genereate the path to the file that must be loaded
 	string lvlToLoad = lvlPathName + to_string(lvlProgress) + lvlExtension;
 	int buffer;
@@ -47,9 +66,18 @@ bool MapLoader::loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 					(*arr)[x][y] = PATH; // replace spawn block by a path block
 					*p2 = PlayerPos(x, y); // put ply2 on its spawn
 				}
+
+				if (buffer != 1) {
+					if (x > rightEdge) rightEdge = x;
+					if (x < leftEdge) leftEdge = x;
+					if (y > topEdge) topEdge = y;
+					if (y < lowEdge) lowEdge = y;
+				}
 			}
 		}
 		rFile.close();
+		mapSize.x = (rightEdge - leftEdge) + 2;
+		mapSize.y = (topEdge - lowEdge) + 2;
 	}
 	else {
 		cout << "fuck you you cant code\n";

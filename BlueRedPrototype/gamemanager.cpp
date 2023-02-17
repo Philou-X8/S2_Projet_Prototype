@@ -4,15 +4,18 @@ GameManager::GameManager() {
 	int map[20][20] = { 0 };
 	p1 = new PlayerPos();
 	p2 = new PlayerPos();
+	PlayerPos mapSize(19, 19);
+
 	// load map from file
 	mapLoader;
-	mapLoader.nextLvl(&map, p1, p2);
+	mapLoader.nextLvl(&map, p1, p2, mapSize);
+
 	// send map to grid object
-	grid = MapGrid(p1, p2);
-	grid.newGrid(map);
-	//grid.placePlayers(p1, p2);
+	mapGrid = MapGrid(p1, p2);
+	mapGrid.newGrid(map, mapSize);
+
 	// display grid
-	std::cout << grid;
+	std::cout << mapGrid;
 
 	// initialize some console variables
 	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -20,6 +23,11 @@ GameManager::GameManager() {
 	consoleHideCursor(true);
 
 	showLvlProgress();
+}
+
+GameManager::~GameManager() {
+	delete p1;
+	delete p2;
 }
 
 void GameManager::gameUpdate(char inputKey) {
@@ -38,29 +46,29 @@ void GameManager::inputPlayerAction(char input) {
 		break;
 		// ------------------------------- player 1
 	case 'w':
-		grid.moveP1(PlayerPos(0, 1));	// up
+		mapGrid.moveP1(PlayerPos(0, 1));	// up
 		break;
 	case 's':
-		grid.moveP1(PlayerPos(0, -1));	// down
+		mapGrid.moveP1(PlayerPos(0, -1));	// down
 		break;
 	case 'd':
-		grid.moveP1(PlayerPos(1, 0));	// right
+		mapGrid.moveP1(PlayerPos(1, 0));	// right
 		break;
 	case 'a':
-		grid.moveP1(PlayerPos(-1, 0));	// left
+		mapGrid.moveP1(PlayerPos(-1, 0));	// left
 		break;
 		// ------------------------------- player 2
 	case 'i':
-		grid.moveP2(PlayerPos(0, 1));	// up
+		mapGrid.moveP2(PlayerPos(0, 1));	// up
 		break;
 	case 'k':
-		grid.moveP2(PlayerPos(0, -1));	// down
+		mapGrid.moveP2(PlayerPos(0, -1));	// down
 		break;
 	case 'l':
-		grid.moveP2(PlayerPos(1, 0));	// right
+		mapGrid.moveP2(PlayerPos(1, 0));	// right
 		break;
 	case 'j':
-		grid.moveP2(PlayerPos(-1, 0));	// left
+		mapGrid.moveP2(PlayerPos(-1, 0));	// left
 		break;
 	default:
 		break;
@@ -68,65 +76,27 @@ void GameManager::inputPlayerAction(char input) {
 }
 
 bool GameManager::levelState() {
-	return grid.mapSolved();
+	return mapGrid.mapSolved();
 }
 void GameManager::levelReload() {
 	int map[20][20] = { 0 };
-	mapLoader.resetLvl(&map, p1, p2);
-	grid.newGrid(map);
-	grid.placePlayers(p1, p2);
+	PlayerPos mapSize(19, 19);
+	mapLoader.resetLvl(&map, p1, p2, mapSize);
+	mapGrid.newGrid(map, mapSize);
+	//grid.placePlayers(p1, p2);
+	consoleHideCursor(true);
 }
 void GameManager::levelNext() {
 	int map[20][20] = { 0 };
-	mapLoader.nextLvl(&map, p1, p2);
-	grid.newGrid(map);
-	grid.placePlayers(p1, p2);
+	PlayerPos mapSize(19, 19);
+	mapLoader.nextLvl(&map, p1, p2, mapSize);
+	mapGrid.newGrid(map, mapSize);
+	//grid.placePlayers(p1, p2);
 }
 void GameManager::levelUpdateUI() {
 	consoleXY(0, 0);
-	std::cout << grid;
+	std::cout << mapGrid;
 }
-
-/*
-void GameManager::inputManager(char input) {
-	switch (input)
-	{
-	case 'r':
-		inputMapAction(input);
-		break;
-	case 'w':
-	case 's':
-	case 'd':
-	case 'a':
-	case 'i':
-	case 'k':
-	case 'l':
-	case 'j':
-		inputPlayerAction(input);
-		break;
-	default:
-		break;
-	}
-}
-*/
-/*
-void GameManager::inputMapAction(char input) {
-	switch (input)
-	{
-	case 'r':
-		levelReload();
-		levelUpdateUI();
-		break;
-	default:
-		break;
-	}
-}
-*/
-/*
-void GameManager::inputMenuAction(char input) {
-
-}
-*/
 
 void GameManager::showLvlProgress() {
 	consoleXY(0, 22);

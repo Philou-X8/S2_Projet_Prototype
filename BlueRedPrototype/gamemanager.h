@@ -12,6 +12,7 @@ class GameManager
 {
 public:
 	GameManager();
+	~GameManager();
 
 	void gameUpdate(char inputKey);
 
@@ -23,18 +24,15 @@ public:
 
 	/******************** input system ********************/
 	void inputPlayerAction(char input);
-	//char getInput();
-	//void inputManager(char input);
-	//void inputMapAction(char input);
-	//void inputMenuAction(char input);
 
 private:
-	// game related objects
+	/******************** game objects ********************/
 	PlayerPos* p1; // player 1 coords
 	PlayerPos* p2; // player 2 coords
 	MapLoader mapLoader;
-	MapGrid grid;
-
+	MapGrid mapGrid;
+	
+	/******************** display func ********************/
 	void showLvlProgress();
 
 	/******************** console usage ********************/
