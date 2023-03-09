@@ -36,6 +36,7 @@ public:
 	const int getLvlProgress();
 	// create a blank map for manual editing
 	void blankMap(); 
+	void ChoosingLevel(int level);
 
 private:
 

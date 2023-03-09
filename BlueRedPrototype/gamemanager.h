@@ -12,6 +12,7 @@ class GameManager
 {
 public:
 	GameManager();
+	GameManager(int niveaux);
 	~GameManager();
 
 	void gameUpdate(char inputKey);
@@ -24,12 +25,13 @@ public:
 
 	/******************** input system ********************/
 	void inputPlayerAction(char input);
+	MapLoader mapLoader;
 
 private:
 	/******************** game objects ********************/
 	Coords* p1; // player 1 coords
 	Coords* p2; // player 2 coords
-	MapLoader mapLoader;
+
 	MapGrid mapGrid;
 	
 	/******************** display func ********************/

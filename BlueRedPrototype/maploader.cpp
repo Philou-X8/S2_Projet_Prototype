@@ -9,6 +9,10 @@ MapLoader::~MapLoader() {
 
 }
 
+void MapLoader::ChoosingLevel(int level) {
+	lvlProgress = level;
+}
+
 const int MapLoader::getLvlProgress() {
 	return lvlProgress;
 }

@@ -1,18 +1,19 @@
 /*
-* 
+*
 *   MAKING A GAME PROTOTYPE FOR SCHOOL
-* 
+*
 */
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
 #include <string>
+#include <mmsystem.h>
 #include "maploader.h"
 #include "mapgrid.h"
 #include "gamemanager.h"
-#include "inputmanager.h"
+#include "menu.h"
 
-
+#pragma comment(lib, "Winmm.lib")
 
 using namespace std;
 
@@ -36,14 +37,8 @@ void ShowCursor(bool show) {
 */
 
 void main() {
-	
-	InputManager* inputManager = new InputManager();
-	GameManager gameWindow;
 
-	char inputchar = 0;
-	while (inputchar != 27) {
-		inputchar = inputManager->getInput();
-		gameWindow.gameUpdate(inputchar);
-	}
-	//inputManager->stopThreads();
+	MENU menu;
+	menu.menu();
+
 }

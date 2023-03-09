@@ -25,6 +25,31 @@ GameManager::GameManager() {
 	showLvlProgress();
 }
 
+GameManager::GameManager(int niveau) {
+	int map[20][20] = { 0 };
+	p1 = new Coords();
+	p2 = new Coords();
+	Coords mapSize(19, 19);
+
+	// load map from file
+	mapLoader.ChoosingLevel(niveau - 1);
+	mapLoader.nextLvl(&map, p1, p2, mapSize);
+
+	// send map to grid object
+	mapGrid = MapGrid(p1, p2);
+	mapGrid.newGrid(map, mapSize);
+
+	// display grid
+	std::cout << mapGrid;
+
+	// initialize some console variables
+	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
+	consoleHideCursor(true);
+
+	showLvlProgress();
+}
+
 GameManager::~GameManager() {
 	delete p1;
 	delete p2;
