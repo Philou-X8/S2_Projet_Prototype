@@ -4,6 +4,7 @@
 #include "mapgrid.h"
 #include "gamemanager.h"
 
+
 void MENU::menu() {
 
     while (choice1 != 3) {
@@ -12,14 +13,16 @@ void MENU::menu() {
         mainMenu();
 
         if (choice1 == 1) {
+
             system("CLS");
-            PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
+            
             GameManager gameWindow;
             char inputchar = 0;
             while (inputchar != 27) {
                 inputchar = _getch();
                 gameWindow.gameUpdate(inputchar);
             }
+            //stop the beat
             PlaySound(NULL, NULL, SND_PURGE);
         }
 
@@ -43,7 +46,6 @@ void MENU::options(void) {
 
         if (choice2 != 69) {
             system("CLS");
-            PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
             GameManager gameWindow(choice2);
             gameWindow.mapLoader.ChoosingLevel(choice2);
             char inputchar = 0;
@@ -51,6 +53,7 @@ void MENU::options(void) {
                 inputchar = _getch();
                 gameWindow.gameUpdate(inputchar);
             }
+            //stop the beat
             PlaySound(NULL, NULL, SND_PURGE);
         }
 
