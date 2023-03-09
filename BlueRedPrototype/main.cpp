@@ -37,13 +37,13 @@ void ShowCursor(bool show) {
 
 void main() {
 	
-	InputManager inputManager;
-	//ctrlReader.startThreads();
-
+	InputManager* inputManager = new InputManager();
 	GameManager gameWindow;
+
 	char inputchar = 0;
 	while (inputchar != 27) {
-		inputchar = inputManager.getInput();
+		inputchar = inputManager->getInput();
 		gameWindow.gameUpdate(inputchar);
 	}
+	//inputManager->stopThreads();
 }

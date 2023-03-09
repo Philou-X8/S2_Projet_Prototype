@@ -36,11 +36,13 @@ void InputManager::test2(int b) {
 
 void InputManager::readKeyboard() {
 	char inputchar = 0;
-	while (inputchar != 27) {
+	while (true) {
 		inputchar = _getch();
 
 		threadLock.lock();
-		pendingInput.push(inputchar);
+		if (pendingInput.size() < 5) {
+			pendingInput.push(inputchar);
+		}
 		threadLock.unlock();
 	}
 }
