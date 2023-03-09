@@ -1,12 +1,20 @@
 #pragma once
 
 #include <iostream>	// std::cout
+#include <string>
 #include <thread>	// std::thread
 #include <mutex>
 #include <list>
 #include <queue>
 
 #include <conio.h>
+
+#include "include/serial/SerialPort.hpp"
+#include "include/json.hpp"
+using json = nlohmann::json;
+#define BAUD 9600           // Frequence de transmission serielle
+#define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
+
 
 using namespace std;
 
@@ -23,6 +31,8 @@ struct buttonstates {
 	bool menu = ARMED;
 };
 
+SerialPort* arduino; //doit etre un objet global!
+
 class InputManager
 {
 public:
@@ -30,11 +40,11 @@ public:
 	~InputManager();
 	void startThreads();
 	void stopThreads();
-	void test1();
-	void test2(int b);
 
-	void readKeyboard();
+	void readKeyboard(); // looping thread
+	void readController(); // looping thread
 	char getInput();
+
 
 private:
 	mutex threadLock;
@@ -43,5 +53,9 @@ private:
 	buttonstates keyboardState;
 	buttonstates controllerState;
 	queue<char, std::list<char>> pendingInput;
+
+	json comsIn;
+	json comsOut;
+	bool recieveComs();
 };
 

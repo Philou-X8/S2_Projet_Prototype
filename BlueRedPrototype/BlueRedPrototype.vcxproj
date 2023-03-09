@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\serial\SerialPort.cpp" />
     <ClCompile Include="inputmanager.cpp" />
     <ClCompile Include="gamemanager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,6 +149,8 @@
     <ClCompile Include="menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\json.hpp" />
+    <ClInclude Include="include\serial\SerialPort.hpp" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="inputmanager.h" />
     <ClInclude Include="gamemanager.h" />
