@@ -2,9 +2,9 @@
 
 GameManager::GameManager() {
 	int map[20][20] = { 0 };
-	p1 = new PlayerPos();
-	p2 = new PlayerPos();
-	PlayerPos mapSize(19, 19);
+	p1 = new Coords();
+	p2 = new Coords();
+	Coords mapSize(19, 19);
 
 	// load map from file
 	mapLoader;
@@ -46,29 +46,29 @@ void GameManager::inputPlayerAction(char input) {
 		break;
 		// ------------------------------- player 1
 	case 'w':
-		mapGrid.moveP1(PlayerPos(0, 1));	// up
+		mapGrid.moveP1(Coords(0, 1));	// up
 		break;
 	case 's':
-		mapGrid.moveP1(PlayerPos(0, -1));	// down
+		mapGrid.moveP1(Coords(0, -1));	// down
 		break;
 	case 'd':
-		mapGrid.moveP1(PlayerPos(1, 0));	// right
+		mapGrid.moveP1(Coords(1, 0));	// right
 		break;
 	case 'a':
-		mapGrid.moveP1(PlayerPos(-1, 0));	// left
+		mapGrid.moveP1(Coords(-1, 0));	// left
 		break;
 		// ------------------------------- player 2
 	case 'i':
-		mapGrid.moveP2(PlayerPos(0, 1));	// up
+		mapGrid.moveP2(Coords(0, 1));	// up
 		break;
 	case 'k':
-		mapGrid.moveP2(PlayerPos(0, -1));	// down
+		mapGrid.moveP2(Coords(0, -1));	// down
 		break;
 	case 'l':
-		mapGrid.moveP2(PlayerPos(1, 0));	// right
+		mapGrid.moveP2(Coords(1, 0));	// right
 		break;
 	case 'j':
-		mapGrid.moveP2(PlayerPos(-1, 0));	// left
+		mapGrid.moveP2(Coords(-1, 0));	// left
 		break;
 	default:
 		break;
@@ -80,7 +80,7 @@ bool GameManager::levelState() {
 }
 void GameManager::levelReload() {
 	int map[20][20] = { 0 };
-	PlayerPos mapSize(19, 19);
+	Coords mapSize(19, 19);
 	mapLoader.resetLvl(&map, p1, p2, mapSize);
 	mapGrid.newGrid(map, mapSize);
 	//grid.placePlayers(p1, p2);
@@ -88,7 +88,7 @@ void GameManager::levelReload() {
 }
 void GameManager::levelNext() {
 	int map[20][20] = { 0 };
-	PlayerPos mapSize(19, 19);
+	Coords mapSize(19, 19);
 	mapLoader.nextLvl(&map, p1, p2, mapSize);
 	mapGrid.newGrid(map, mapSize);
 	//grid.placePlayers(p1, p2);

@@ -27,10 +27,10 @@ bool MapLoader::nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2) {
 	}
 }
 */
-bool MapLoader::resetLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize) {
+bool MapLoader::resetLvl(int(*arr)[20][20], Coords* p1, Coords* p2, Coords& mapSize) {
 	return loadMap(arr, p1, p2, mapSize);
 }
-bool MapLoader::nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize) {
+bool MapLoader::nextLvl(int(*arr)[20][20], Coords* p1, Coords* p2, Coords& mapSize) {
 	lvlProgress++;
 	if (loadMap(arr, p1, p2, mapSize)) {
 		return true; // loading next level successful 
@@ -41,7 +41,7 @@ bool MapLoader::nextLvl(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerP
 	}
 }
 
-bool MapLoader::loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize) {
+bool MapLoader::loadMap(int(*arr)[20][20], Coords* p1, Coords* p2, Coords& mapSize) {
 	int leftEdge = 19;
 	int rightEdge = 0;
 	int lowEdge = 19;
@@ -60,11 +60,11 @@ bool MapLoader::loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerP
 				// set player to their spawn
 				if (buffer == SPAWN1) {
 					(*arr)[x][y] = PATH; // replace spawn block by a path block
-					*p1 = PlayerPos(x, y); // put ply1 on its spawn
+					*p1 = Coords(x, y); // put ply1 on its spawn
 				} 
 				if (buffer == SPAWN2) {
 					(*arr)[x][y] = PATH; // replace spawn block by a path block
-					*p2 = PlayerPos(x, y); // put ply2 on its spawn
+					*p2 = Coords(x, y); // put ply2 on its spawn
 				}
 
 				if (buffer != 1) {

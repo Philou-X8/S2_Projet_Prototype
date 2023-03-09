@@ -27,8 +27,8 @@ public:
 
 private:
 	/******************** game objects ********************/
-	PlayerPos* p1; // player 1 coords
-	PlayerPos* p2; // player 2 coords
+	Coords* p1; // player 1 coords
+	Coords* p2; // player 2 coords
 	MapLoader mapLoader;
 	MapGrid mapGrid;
 	

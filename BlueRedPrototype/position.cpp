@@ -1,50 +1,50 @@
 #include "position.h"
 
-PlayerPos::PlayerPos() {
+Coords::Coords() {
 	x = 0;
 	y = 0;
 }
-PlayerPos::PlayerPos(int xx, int yy) {
+Coords::Coords(int xx, int yy) {
 	x = xx;
 	y = yy;
 }
 
-PlayerPos::PlayerPos(const PlayerPos& p2) {
+Coords::Coords(const Coords& p2) {
 	x = p2.x;
 	y = p2.y;
 }
 
-bool PlayerPos::setPos(const int xx, const int yy) {
+bool Coords::setPos(const int xx, const int yy) {
 	x = xx;
 	y = yy;
 	return true;
 }
-bool PlayerPos::setPos(const PlayerPos& p2) {
+bool Coords::setPos(const Coords& p2) {
 	return setPos(p2.x, p2.y);
 }
-bool PlayerPos::move(const int dx, const int dy) {
+bool Coords::move(const int dx, const int dy) {
 	x += dx;
 	y += dy;
 	return true;
 }
-bool PlayerPos::move(const PlayerPos& delta) {
+bool Coords::move(const Coords& delta) {
 	move(delta.x, delta.y);
 	return true;
 }
 
-bool PlayerPos::operator==(const PlayerPos& p2) {
+bool Coords::operator==(const Coords& p2) {
 	bool equal = true;
 	if (x != p2.x) equal = false;
 	if (y != p2.y) equal = false;
 	return equal;
 }
-bool PlayerPos::operator!=(const PlayerPos& p2) {
+bool Coords::operator!=(const Coords& p2) {
 	if (x != p2.x) return true;
 	if (y != p2.y) return true;
 	return false;
 }
 
-PlayerPos& PlayerPos::operator=(const PlayerPos& p2) {
+Coords& Coords::operator=(const Coords& p2) {
 	x = p2.x;
 	y = p2.y;
 	return *this;
@@ -55,20 +55,20 @@ PlayerPos& PlayerPos::operator=(const PlayerPos* p2) {
 	return *this;
 }
 */
-PlayerPos& PlayerPos::operator+=(const PlayerPos& p2) {
+Coords& Coords::operator+=(const Coords& p2) {
 	move(p2);
 	return *this;
 }
-PlayerPos& PlayerPos::operator-=(const PlayerPos& p2) {
+Coords& Coords::operator-=(const Coords& p2) {
 	move(-p2.x, -p2.y);
 	return *this;
 }
-PlayerPos PlayerPos::operator+(const PlayerPos& p2) {
-	PlayerPos total(x + p2.x, y + p2.y);
+Coords Coords::operator+(const Coords& p2) {
+	Coords total(x + p2.x, y + p2.y);
 	return total;
 }
-PlayerPos PlayerPos::operator-(const PlayerPos& p2) {
-	PlayerPos total(x - p2.x, y - p2.y);
+Coords Coords::operator-(const Coords& p2) {
+	Coords total(x - p2.x, y - p2.y);
 	return total;
 }
 
@@ -93,7 +93,7 @@ int clampM(const int& val) {
 	return val;
 }
 
-PlayerPos clampP(PlayerPos& pos) {
+Coords clampP(Coords& pos) {
 	clampM(pos.x);
 	clampM(pos.y);
 	return pos;

@@ -6,18 +6,18 @@ MapGrid::MapGrid() {
 			grid[i][j] = 0;
 		}
 	}
-	mapSize = PlayerPos(19, 19);
+	mapSize = Coords(19, 19);
 	p1 = nullptr;
 	p2 = nullptr;
 
 }
-MapGrid::MapGrid(PlayerPos* p1pos, PlayerPos* p2pos) {
+MapGrid::MapGrid(Coords* p1pos, Coords* p2pos) {
 	for (int i(0); i < 20; i++) {
 		for (int j(0); j < 20; j++) {
 			grid[i][j] = 0;
 		}
 	}
-	mapSize = PlayerPos(19, 19); // temp
+	mapSize = Coords(19, 19); // temp
 	p1 = p1pos;
 	p2 = p2pos;
 }
@@ -32,7 +32,7 @@ int& MapGrid::getTile(int x, int y) {
 }
 
 
-void MapGrid::newGrid(int arr[20][20], PlayerPos newMapSize) {
+void MapGrid::newGrid(int arr[20][20], Coords newMapSize) {
 	for (int i(0); i < 20; i++) {
 		for (int j(0); j < 20; j++) {
 			grid[i][j] = arr[i][j];
@@ -41,17 +41,17 @@ void MapGrid::newGrid(int arr[20][20], PlayerPos newMapSize) {
 	mapSize = newMapSize;
 }
 
-void MapGrid::placePlayers(PlayerPos* p1pos, PlayerPos* p2pos) {
+void MapGrid::placePlayers(Coords* p1pos, Coords* p2pos) {
 	p1 = p1pos;
 	p2 = p2pos;
 }
 
-PlayerPos& MapGrid::editSize() {
+Coords& MapGrid::editSize() {
 	return mapSize;
 }
 
-int MapGrid::moveP1(PlayerPos dir) {
-	PlayerPos newPos(*p1 + dir);
+int MapGrid::moveP1(Coords dir) {
+	Coords newPos(*p1 + dir);
 	switch (grid[newPos.x][newPos.y]) {
 	case WALL:
 		return 0;
@@ -70,8 +70,8 @@ int MapGrid::moveP1(PlayerPos dir) {
 	}
 	return 1;
 }
-int MapGrid::moveP2(PlayerPos dir) {
-	PlayerPos newPos(*p2 + dir);
+int MapGrid::moveP2(Coords dir) {
+	Coords newPos(*p2 + dir);
 	switch (grid[newPos.x][newPos.y]) {
 	case WALL:
 		return 0;
@@ -91,9 +91,9 @@ int MapGrid::moveP2(PlayerPos dir) {
 	return 1;
 }
 
-int MapGrid::actionRed(PlayerPos dir) {
-	PlayerPos posBox(*p1 + dir);
-	PlayerPos posBehindBox(posBox + dir);
+int MapGrid::actionRed(Coords dir) {
+	Coords posBox(*p1 + dir);
+	Coords posBehindBox(posBox + dir);
 	if ((grid[posBehindBox.x][posBehindBox.y] == PATH) && (posBehindBox != *p2)) {
 		grid[posBehindBox.x][posBehindBox.y] = BOX;
 		grid[posBox.x][posBox.y] = PATH;
@@ -102,9 +102,9 @@ int MapGrid::actionRed(PlayerPos dir) {
 	}
 	return 0;
 }
-int MapGrid::actionBlue(PlayerPos dir) {
-	PlayerPos posBox(*p2 + dir);
-	PlayerPos posBehindPly(*p2 - dir);
+int MapGrid::actionBlue(Coords dir) {
+	Coords posBox(*p2 + dir);
+	Coords posBehindPly(*p2 - dir);
 	if ((grid[posBehindPly.x][posBehindPly.y] == PATH) && (posBehindPly != *p1)) {
 		grid[p2->x][p2->y] = BOX;
 		grid[posBox.x][posBox.y] = PATH;

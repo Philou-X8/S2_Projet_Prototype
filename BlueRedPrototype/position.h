@@ -12,24 +12,24 @@ const char DOWN = 'd';
 const char RIGHT = 'r';
 const char LEFT = 'l';
 
-class PlayerPos
+class Coords
 {
 public:
-	PlayerPos();
-	PlayerPos(int xx, int yy);
-	PlayerPos(const PlayerPos& p2);
+	Coords();
+	Coords(int xx, int yy);
+	Coords(const Coords& p2);
 	bool setPos(const int xx, const int yy);
-	bool setPos(const PlayerPos& p2);
+	bool setPos(const Coords& p2);
 	bool move(const int dx, const int dy);
-	bool move(const PlayerPos& p2);
-	bool operator==(const PlayerPos& p2);
-	bool operator!=(const PlayerPos& p2);
-	PlayerPos& operator=(const PlayerPos& p2);
+	bool move(const Coords& p2);
+	bool operator==(const Coords& p2);
+	bool operator!=(const Coords& p2);
+	Coords& operator=(const Coords& p2);
 	//PlayerPos& operator=(const PlayerPos* p2);
-	PlayerPos& operator+=(const PlayerPos& p2);
-	PlayerPos& operator-=(const PlayerPos& p2);
-	PlayerPos operator+(const PlayerPos& p2);
-	PlayerPos operator-(const PlayerPos& p2);
+	Coords& operator+=(const Coords& p2);
+	Coords& operator-=(const Coords& p2);
+	Coords operator+(const Coords& p2);
+	Coords operator-(const Coords& p2);
 
 	int x, y;
 };
@@ -37,4 +37,4 @@ public:
 int clampM(int& val); // clamp a value to the map dimentions
 int clampM(const int& val); // clamp a value to the map dimentions
 
-PlayerPos clampP(PlayerPos& pos); // clamp a position to the map dimentions
+Coords clampP(Coords& pos); // clamp a position to the map dimentions

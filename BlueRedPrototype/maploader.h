@@ -22,15 +22,15 @@ public:
 	*/
 	bool resetLvl(
 		int(*arr)[20][20], 
-		PlayerPos* p1, 
-		PlayerPos* p2,
-		PlayerPos& mapSize
+		Coords* p1, 
+		Coords* p2,
+		Coords& mapSize
 	);
 	bool nextLvl(
 		int(*arr)[20][20], 
-		PlayerPos* p1, 
-		PlayerPos* p2,
-		PlayerPos& mapSize
+		Coords* p1, 
+		Coords* p2,
+		Coords& mapSize
 	);
 
 	const int getLvlProgress();
@@ -39,7 +39,7 @@ public:
 
 private:
 
-	bool loadMap(int(*arr)[20][20], PlayerPos* p1, PlayerPos* p2, PlayerPos& mapSize);
+	bool loadMap(int(*arr)[20][20], Coords* p1, Coords* p2, Coords& mapSize);
 
 	ifstream rFile;
 	string lvlPathName;

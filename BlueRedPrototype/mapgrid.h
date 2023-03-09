@@ -15,24 +15,24 @@ class MapGrid
 {
 public:
 	MapGrid();
-	MapGrid(PlayerPos* p1pos, PlayerPos* p2pos);
+	MapGrid(Coords* p1pos, Coords* p2pos);
 	~MapGrid();
 	int& getTile(int x, int y);
-	void newGrid(int arr[20][20], PlayerPos newMapSize);
-	void placePlayers(PlayerPos* p1pos, PlayerPos* p2pos);
-	PlayerPos& editSize();
-	int moveP1(PlayerPos dir);
-	int moveP2(PlayerPos dir);
-	int actionRed(PlayerPos dir);
-	int actionBlue(PlayerPos dir);
+	void newGrid(int arr[20][20], Coords newMapSize);
+	void placePlayers(Coords* p1pos, Coords* p2pos);
+	Coords& editSize();
+	int moveP1(Coords dir);
+	int moveP2(Coords dir);
+	int actionRed(Coords dir);
+	int actionBlue(Coords dir);
 	bool mapSolved();
 	friend ostream& operator <<(ostream& s, MapGrid& grid);
 
 private:
 	
 	int grid[20][20];
-	PlayerPos mapSize;
+	Coords mapSize;
 
-	PlayerPos* p1;
-	PlayerPos* p2;
+	Coords* p1;
+	Coords* p2;
 };
