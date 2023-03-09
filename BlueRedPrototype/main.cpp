@@ -10,6 +10,9 @@
 #include "maploader.h"
 #include "mapgrid.h"
 #include "gamemanager.h"
+#include "inputmanager.h"
+
+
 
 using namespace std;
 
@@ -34,10 +37,13 @@ void ShowCursor(bool show) {
 
 void main() {
 	
+	InputManager inputManager;
+	//ctrlReader.startThreads();
+
 	GameManager gameWindow;
 	char inputchar = 0;
 	while (inputchar != 27) {
-		inputchar = _getch();
+		inputchar = inputManager.getInput();
 		gameWindow.gameUpdate(inputchar);
 	}
 }
