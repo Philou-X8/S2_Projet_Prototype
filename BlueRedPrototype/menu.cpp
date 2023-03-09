@@ -4,8 +4,8 @@
 #include "mapgrid.h"
 #include "gamemanager.h"
 
-void MENU::menu() {
-
+void MENU::menu(InputManager* inMng) {
+    inputManager = inMng;
     while (choice1 != 3) {
 
         choice2 = 0;
@@ -17,7 +17,7 @@ void MENU::menu() {
             GameManager gameWindow;
             char inputchar = 0;
             while (inputchar != 27) {
-                inputchar = _getch();
+                inputchar = inputManager->getInput();
                 gameWindow.gameUpdate(inputchar);
             }
             PlaySound(NULL, NULL, SND_PURGE);
@@ -48,7 +48,7 @@ void MENU::options(void) {
             gameWindow.mapLoader.ChoosingLevel(choice2);
             char inputchar = 0;
             while (inputchar != 27) {
-                inputchar = _getch();
+                inputchar = inputManager->getInput();
                 gameWindow.gameUpdate(inputchar);
             }
             PlaySound(NULL, NULL, SND_PURGE);

@@ -1,8 +1,9 @@
 #include "inputmanager.h"
 
-bool SendToSerial(SerialPort* arduino, json j_msg);
-bool RcvFromSerial(SerialPort* arduino, string& msg);
+//bool SendToSerial(SerialPort* arduino, json j_msg);
+//bool RcvFromSerial(SerialPort* arduino, string& msg);
 
+SerialPort* arduino; //doit etre un objet global!
 
 InputManager::InputManager() {
 	startThreads();
@@ -107,8 +108,8 @@ char InputManager::getInput(){
 
 
 
-
-/*----------------------------- Fonction "Main" -----------------------------*/
+/*
+//----------------------------- Fonction "Main" -----------------------------
 int main() {
     
 
@@ -158,15 +159,17 @@ int main() {
     return 0;
 }
 
+*/
 
-
-/*---------------------------Definition de fonctions ------------------------*/
+/*
+//---------------------------Definition de fonctions ------------------------
 bool SendToSerial(SerialPort* arduino, json j_msg) {
     // Return 0 if error
     string msg = j_msg.dump();
     bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());
     return ret;
 }
+*/
 
 /*
 bool RcvFromSerial(SerialPort* arduino, string& msg) {

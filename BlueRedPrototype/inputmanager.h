@@ -16,6 +16,7 @@ using json = nlohmann::json;
 #define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
+
 using namespace std;
 
 #define ACTIVE 1
@@ -31,7 +32,7 @@ struct buttonstates {
 	bool menu = ARMED;
 };
 
-SerialPort* arduino; //doit etre un objet global!
+
 
 class InputManager
 {
