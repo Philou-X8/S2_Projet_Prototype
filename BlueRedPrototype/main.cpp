@@ -21,6 +21,8 @@ using namespace std;
 void main() {
 
 	InputManager* inputManager = new InputManager();
+	//int temp;
+	//cin >> temp;
 	MENU menu;
 	menu.menu(inputManager);
 	//menu.menu;

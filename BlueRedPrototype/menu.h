@@ -22,8 +22,8 @@ public:
 
 private:
 
-	int choice1 = 0;
-	int choice2 = 3;
+	char choice1 = 0;
+	char choice2 = 3;
 
 	InputManager* inputManager;
 

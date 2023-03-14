@@ -1,0 +1,13 @@
+// controller to PC
+[
+	{
+		"dir": 0, // joystick
+		"a1": 0,
+		"a2": 0,
+		"m1": 0,
+		"m2": 0,
+		"actPly": 0, // active player switch
+		"rst": 0 // giro requesting reset
+
+	}
+]

@@ -1,0 +1,11 @@
+// PC to controller
+[
+	{
+		"led": {
+			"r": 0,
+			"g": 0,
+			"b": 0
+		},
+		"nb": 0 // both 7 segments display
+	}
+]

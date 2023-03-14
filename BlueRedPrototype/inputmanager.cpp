@@ -6,40 +6,72 @@
 SerialPort* arduino; //doit etre un objet global!
 
 InputManager::InputManager() {
-	startThreads();
-
-
+    //arduino = nullptr;
+    isActiveController = false;
+    isActiveKeyboard = false;
     // --------------------------- connect controller
     string comPort = "COM1";
     for (int i = '1'; i <= '9'; i++) {
         comPort[3] = i;
         arduino = new SerialPort(comPort.c_str(), BAUD);
         if (arduino->isConnected()) {
+            //isActiveController = true;
             break;
         }
         else {
             delete arduino;
+            //arduino = nullptr;
         }
     }
 
-
+    startThreads();
 }
 InputManager::~InputManager() {
-
+    stopThreads();
 }
+
+char InputManager::getInput() {
+
+    char returnVal = 0;
+    threadLock.lock();
+    if (pendingInput.size() > 0) {
+        returnVal = pendingInput.front();
+        pendingInput.pop();
+    }
+    threadLock.unlock();
+    return returnVal;
+}
+
 
 void InputManager::startThreads() {
-	keyboardComs = thread(&InputManager::readKeyboard, this);
+    if (!isActiveKeyboard) {
+        isActiveKeyboard = true;
+        keyboardComs = thread(&InputManager::readKeyboard, this);
+    }
+    if (!isActiveController) {
+        isActiveController = true;
+        controllerComs = thread(&InputManager::readController, this);
+    }
+    
 }
 
-void InputManager::stopThreads() {
-	keyboardComs.join();
+bool InputManager::stopThreads() {
+    if (isActiveKeyboard) {
+        isActiveKeyboard = false;
+        keyboardComs.join();
+    }
+    if (isActiveController) {
+        isActiveController = false;
+        controllerComs.join();
+    }
+    return true;
+
 }
 
 
 void InputManager::readKeyboard() {
 	char inputchar = 0;
-	while (true) {
+	while (isActiveKeyboard) {
 		inputchar = _getch();
 
 		threadLock.lock();
@@ -53,7 +85,7 @@ void InputManager::readKeyboard() {
 
 void InputManager::readController() {
     char inputchar = 0;
-    while (true) {
+    while (isActiveController) {
         
         // skip loop if serial port is empty
         if (!recieveComs()) {
@@ -64,9 +96,13 @@ void InputManager::readController() {
 
         //decode the JSON into variables
         // -----------------------------example
-        int tempExample = 0;
-        tempExample = comsIn["mouvment"].get<int>(); // read json field
+        int tempExample = -1;
+        if (!comsIn["movement"].is_null()) {
+            tempExample = comsIn["movement"];
+            //tempExample = comsIn["mouvment"].get<int>(); // read json field
+        }
         // -----------------------------example end
+        
 
         if (pendingInput.size() < 5) {
             pendingInput.push(inputchar);
@@ -94,16 +130,28 @@ bool InputManager::recieveComs() {
     }
 }
 
-char InputManager::getInput(){
-	
-	char returnVal = 0;
-	threadLock.lock();
-	if (pendingInput.size() > 0) {
-		returnVal = pendingInput.front();
-		pendingInput.pop();
-	}
-	threadLock.unlock();
-	return returnVal;
+
+std::list<char> InputManager::decodeController() {
+    std::list<char> inputList;
+    int activePlayer;
+    activePlayer = comsIn["actPly"];
+    if (activePlayer == 0) {
+        // action button 1
+        int action1 = comsIn["a1"];
+        if (action1 == 1 && controllerState.up == ARMED) {
+            inputList.push_back('i');
+            controllerState.up = ACTIVE;
+        }
+        else if (action1 == 0) {
+            controllerState.up = ARMED;
+        }
+        // action button 2
+            // do stuff
+    }
+    else {
+
+    }
+    return inputList;
 }
 
 

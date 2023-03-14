@@ -40,17 +40,20 @@ public:
 	InputManager();
 	~InputManager();
 	void startThreads();
-	void stopThreads();
-
-	void readKeyboard(); // looping thread
-	void readController(); // looping thread
+	bool stopThreads();
+	
 	char getInput();
 
 
 private:
 	mutex threadLock;
 	thread keyboardComs; // reading from the keyboard
-	//thread keyboardAction; // ingame actions from the keyboard
+	thread controllerComs; // reading from the controller
+	void readKeyboard(); // looping thread
+	void readController(); // looping thread
+	bool isActiveKeyboard; // should keep the threads running
+	bool isActiveController; // should keep the threads running
+	
 	buttonstates keyboardState;
 	buttonstates controllerState;
 	queue<char, std::list<char>> pendingInput;

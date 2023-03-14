@@ -70,5 +70,13 @@
     <Text Include="..\hours.txt">
       <Filter>Fichiers d%27en-tête</Filter>
     </Text>
+    <Text Include="Arduino_to_PC.json">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PC_to_Arduino.json">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </None>
   </ItemGroup>
 </Project>

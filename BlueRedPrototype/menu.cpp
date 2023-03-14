@@ -6,12 +6,12 @@
 
 void MENU::menu(InputManager* inMng) {
     inputManager = inMng;
-    while (choice1 != 3) {
+    while (choice1 != '3') {
 
         choice2 = 0;
         mainMenu();
 
-        if (choice1 == 1) {
+        if (choice1 == '1') {
             system("CLS");
             PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
             GameManager gameWindow;
@@ -20,15 +20,16 @@ void MENU::menu(InputManager* inMng) {
                 inputchar = inputManager->getInput();
                 gameWindow.gameUpdate(inputchar);
             }
+            inputManager->stopThreads();
             PlaySound(NULL, NULL, SND_PURGE);
         }
 
-        if (choice1 == 2) {
+        if (choice1 == '2') {
             options();
 
         }
 
-        if (choice1 == 3) {
+        if (choice1 == '3') {
             break;
         }
     }
@@ -38,10 +39,10 @@ void MENU::options(void) {
 
 
 
-    while (choice2 != 3) {
+    while (choice2 != '3') {
         optionsMenu();
 
-        if (choice2 != 69) {
+        if (choice2 != 27) {
             system("CLS");
             PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
             GameManager gameWindow(choice2);
@@ -51,10 +52,11 @@ void MENU::options(void) {
                 inputchar = inputManager->getInput();
                 gameWindow.gameUpdate(inputchar);
             }
+            inputManager->stopThreads();
             PlaySound(NULL, NULL, SND_PURGE);
         }
 
-        if (choice2 == 69) {
+        if (choice2 == 27) {
             break;
         }
     }
@@ -67,7 +69,7 @@ void MENU::mainMenu(void) {
     cout << "2 - Choose a map\n";
     cout << "3 - Quit (looser)\n";
     cout << "Please choose: ";
-    cin >> choice1;
+    choice1 = _getch();
 
 }
 
@@ -76,6 +78,6 @@ void MENU::optionsMenu(void) {
     cout << "Level Menu\n";
     cout << "Entrer the number of the level\n";
     cout << "Please choose: ";
-    cin >> choice2;
+    choice2 = _getch();
 
 }
