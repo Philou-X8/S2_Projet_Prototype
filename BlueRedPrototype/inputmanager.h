@@ -39,11 +39,11 @@ class InputManager
 public:
 	InputManager();
 	~InputManager();
-	void startThreads();
-	bool stopThreads();
-	
+
 	char getInput();
 
+	void startThreads();
+	bool stopThreads();
 
 private:
 	mutex threadLock;
@@ -61,5 +61,7 @@ private:
 	json comsIn;
 	json comsOut;
 	bool recieveComs();
+	std::list<char> decodeController();
+
 };
 
