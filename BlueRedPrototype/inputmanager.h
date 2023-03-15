@@ -30,6 +30,7 @@ struct buttonstates {
 	bool action = ARMED;
 	bool reload = ARMED;
 	bool menu = ARMED;
+	int dir = 0;
 };
 
 
@@ -62,6 +63,7 @@ private:
 	json comsOut;
 	bool recieveComs();
 	std::list<char> decodeController();
+	char buttonPress(int recivedState, bool& buttonState, char map);
 
 };
 

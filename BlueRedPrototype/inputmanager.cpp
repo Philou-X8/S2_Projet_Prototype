@@ -135,24 +135,49 @@ std::list<char> InputManager::decodeController() {
     std::list<char> inputList;
     int activePlayer;
     activePlayer = comsIn["actPly"];
+    
     if (activePlayer == 0) {
-        // action button 1
-        int action1 = comsIn["a1"];
-        if (action1 == 1 && controllerState.up == ARMED) {
-            inputList.push_back('i');
-            controllerState.up = ACTIVE;
-        }
-        else if (action1 == 0) {
-            controllerState.up = ARMED;
-        }
-        // action button 2
-            // do stuff
+        inputList.push_back(buttonPress(comsIn["rst"], controllerState.reload, 'r'));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 1,
+            controllerState.up,
+            'i'
+        ));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 2,
+            controllerState.down,
+            'k'
+        ));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 3,
+            controllerState.right,
+            'l'
+        ));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 4,
+            controllerState.left,
+            'h'
+        ));
     }
     else {
 
     }
     return inputList;
 }
+
+
+char InputManager::buttonPress(int recivedState, bool& buttonState, char map) {
+    
+    if (recivedState == 1 && buttonState == ARMED) {
+        buttonState = ACTIVE;
+        return map;
+    }
+    else if (recivedState == 0) {
+        buttonState = ARMED;
+    }
+    return 0;
+}
+
 
 
 
