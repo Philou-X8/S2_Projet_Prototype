@@ -32,11 +32,11 @@ public:
 		Coords* p2,
 		Coords& mapSize
 	);
-
+	void setLvlProgress(int lvl);
 	const int getLvlProgress();
-	// create a blank map for manual editing
-	void blankMap(); 
-	void ChoosingLevel(int level);
+
+	void blankMap(); // create a blank map for manual editing
+	//void ChoosingLevel(int level);
 
 private:
 

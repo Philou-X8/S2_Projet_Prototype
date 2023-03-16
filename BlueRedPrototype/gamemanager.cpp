@@ -1,7 +1,7 @@
 #include "gamemanager.h"
 
 GameManager::GameManager(InputManager *inManager) {
-	inputmanager = inManager;
+	inputManager = inManager;
 	int map[20][20] = { 0 };
 	p1 = new Coords();
 	p2 = new Coords();
@@ -28,15 +28,15 @@ GameManager::GameManager(InputManager *inManager) {
 }
 
 GameManager::GameManager(int niveau, InputManager* inManager) {
-	inputmanager = inManager;
+	inputManager = inManager;
 	int map[20][20] = { 0 };
 	p1 = new Coords();
 	p2 = new Coords();
 	Coords mapSize(19, 19);
 
 	// load map from file
-	mapLoader.ChoosingLevel(niveau - 1);
-	mapLoader.nextLvl(&map, p1, p2, mapSize);
+	mapLoader.setLvlProgress(niveau);
+	mapLoader.resetLvl(&map, p1, p2, mapSize);
 
 	// send map to grid object
 	mapGrid = MapGrid(p1, p2);
@@ -112,12 +112,20 @@ void GameManager::inputPlayerAction(char input) {
 bool GameManager::levelState() {
 	return mapGrid.mapSolved();
 }
+
+void GameManager::levelSet(int lvl) {
+	mapLoader.setLvlProgress(lvl);
+	int map[20][20] = { 0 };
+	Coords mapSize(19, 19);
+	mapLoader.resetLvl(&map, p1, p2, mapSize);
+	mapGrid.newGrid(map, mapSize);
+	consoleHideCursor(true);
+}
 void GameManager::levelReload() {
 	int map[20][20] = { 0 };
 	Coords mapSize(19, 19);
 	mapLoader.resetLvl(&map, p1, p2, mapSize);
 	mapGrid.newGrid(map, mapSize);
-	//grid.placePlayers(p1, p2);
 	consoleHideCursor(true);
 }
 void GameManager::levelNext() {
@@ -125,7 +133,7 @@ void GameManager::levelNext() {
 	Coords mapSize(19, 19);
 	mapLoader.nextLvl(&map, p1, p2, mapSize);
 	mapGrid.newGrid(map, mapSize);
-	//grid.placePlayers(p1, p2);
+	consoleHideCursor(true);
 }
 void GameManager::levelUpdateUI() {
 	consoleXY(0, 0);
@@ -149,5 +157,5 @@ void GameManager::consoleHideCursor(bool hide) {
 }
 
 void GameManager::outputLevel() {
-	inputmanager->getLevel(mapLoader.getLvlProgress());
+	inputManager->getLevel(mapLoader.getLvlProgress());
 }

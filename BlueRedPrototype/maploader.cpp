@@ -8,11 +8,14 @@ MapLoader::MapLoader() {
 MapLoader::~MapLoader() {
 
 }
-
+/*
 void MapLoader::ChoosingLevel(int level) {
 	lvlProgress = level;
 }
-
+*/
+void MapLoader::setLvlProgress(int lvl) {
+	lvlProgress = lvl;
+}
 const int MapLoader::getLvlProgress() {
 	return lvlProgress;
 }
@@ -84,7 +87,7 @@ bool MapLoader::loadMap(int(*arr)[20][20], Coords* p1, Coords* p2, Coords& mapSi
 		mapSize.y = (topEdge - lowEdge) + 2;
 	}
 	else {
-		cout << "fuck you you cant code\n";
+		cout << "fuck you you cant code (loading level failed)\n";
 		return false;
 	}
 	

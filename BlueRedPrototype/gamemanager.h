@@ -19,14 +19,14 @@ public:
 	void gameUpdate(char inputKey);
 
 	/******************** map display ********************/
-	bool levelState(); 
+	bool levelState();
+	void levelSet(int lvl);
 	void levelReload();
 	void levelNext();
 	void levelUpdateUI();
 
-	/******************** input system ********************/
-	void inputPlayerAction(char input);
-	MapLoader mapLoader;
+	
+	
 	void outputLevel();
 
 private:
@@ -35,8 +35,11 @@ private:
 	Coords* p2; // player 2 coords
 
 	MapGrid mapGrid;
-	InputManager *inputmanager;
+	MapLoader mapLoader;
 
+	/******************** input system ********************/
+	InputManager* inputManager;
+	void inputPlayerAction(char input);
 	
 	/******************** display func ********************/
 	void showLvlProgress();

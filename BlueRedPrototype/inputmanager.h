@@ -41,10 +41,14 @@ public:
 	InputManager();
 	~InputManager();
 
+	bool connectController();
+
 	char getInput();
 
 	void startThreads();
 	bool stopThreads();
+
+	void updateOutputInfo(int lvl, int ply);
 	void getLevel(int level);
 private:
 	mutex threadLock;
@@ -55,6 +59,8 @@ private:
 	bool isActiveKeyboard; // should keep the threads running
 	bool isActiveController; // should keep the threads running
 	
+	bool controllerConnected; //
+
 	buttonstates keyboardState;
 	buttonstates controllerState;
 	queue<char, std::list<char>> pendingInput;
@@ -62,6 +68,7 @@ private:
 	json comsIn;
 	json comsOut;
 	bool recieveComs();
+	bool sendComs();
 	std::list<char> decodeController();
 	char buttonPress(int recivedState, bool& buttonState, char map);
 	int level;

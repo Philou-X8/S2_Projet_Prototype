@@ -10,24 +10,37 @@ InputManager::InputManager() {
     isActiveController = false;
     isActiveKeyboard = false;
     // --------------------------- connect controller
+    
+    connectController();
+    startThreads();
+}
+InputManager::~InputManager() {
+    stopThreads();
+}
+
+bool InputManager::connectController() {
+    if (arduino != nullptr) {
+        if (arduino->isConnected()) {
+            controllerConnected = true;
+            return controllerConnected;
+        }
+    }
+    
     string comPort = "COM1";
     for (int i = '1'; i <= '9'; i++) {
         comPort[3] = i;
         arduino = new SerialPort(comPort.c_str(), BAUD);
         if (arduino->isConnected()) {
-            //isActiveController = true;
-            break;
+            controllerConnected = true;
+            std::cout << "controller connnected on port " << comPort << endl;
+            return controllerConnected;
         }
         else {
             delete arduino;
-            //arduino = nullptr;
         }
     }
-
-    startThreads();
-}
-InputManager::~InputManager() {
-    stopThreads();
+    controllerConnected = false;
+    return controllerConnected;
 }
 
 char InputManager::getInput() {
@@ -41,7 +54,6 @@ char InputManager::getInput() {
     threadLock.unlock();
     return returnVal;
 }
-
 
 void InputManager::startThreads() {
     if (!isActiveKeyboard) {
@@ -68,7 +80,6 @@ bool InputManager::stopThreads() {
 
 }
 
-
 void InputManager::readKeyboard() {
 	char inputchar = 0;
 	while (isActiveKeyboard) {
@@ -82,16 +93,19 @@ void InputManager::readKeyboard() {
 	}
 }
 
-
 void InputManager::readController() {
     char inputchar = 0;
     while (isActiveController) {
         
+        if (!sendComs()) {
+            std::cout << "couldn't send to arduino\n";
+        }
+
         // skip loop if serial port is empty
         if (!recieveComs()) {
             continue;
         }
-
+        std::cout << comsIn.dump() << endl;
         std::list<char> newInput(decodeController());
 
         threadLock.lock();
@@ -101,35 +115,24 @@ void InputManager::readController() {
             }
         }
         threadLock.unlock();
-        /*
-        threadLock.lock();
-        //decode the JSON into variables
-        // -----------------------------example
-        int tempExample = -1;
-        if (!comsIn["movement"].is_null()) {
-            tempExample = comsIn["movement"];
-            //tempExample = comsIn["mouvment"].get<int>(); // read json field
-        }
-        // -----------------------------example end
-        
 
-        if (pendingInput.size() < 5) {
-            pendingInput.push(inputchar);
-        }
-        threadLock.unlock();
-        */
+        //tempExample = comsIn["mouvment"].get<int>(); // read json field
     }
 }
 
 bool InputManager::recieveComs() {
+    std::cout << "recieving coms\n";
 
     string str_buffer;
     char char_buffer[MSG_MAX_SIZE];
+
+    arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
 
     int buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
     
     if (buffer_size > 0) {
         str_buffer.assign(char_buffer, buffer_size);
+        std::cout << str_buffer << endl;
         comsIn.clear();
         comsIn = json::parse(str_buffer);
         return true;
@@ -137,7 +140,16 @@ bool InputManager::recieveComs() {
         return false;
     }
 }
-
+bool InputManager::sendComs() {
+    //string msg = comsOut.dump();
+    //bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());
+    //return ret;
+    std::cout << "sending coms\n";
+    return arduino->writeSerialPort(
+        comsOut.dump().c_str(),
+        comsOut.dump().length()
+    );
+}
 
 std::list<char> InputManager::decodeController() {
     std::list<char> inputList;
@@ -190,6 +202,30 @@ void InputManager::getLevel(int niveau) {
     level = niveau;
 }
 
+
+void InputManager::updateOutputInfo(int lvl, int ply) {
+    comsOut.clear();
+    comsOut["nb"] = lvl;
+    switch (ply)
+    {
+    case 1:
+        comsOut["r"] = 255;
+        comsOut["g"] = 0;
+        comsOut["b"] = 0;
+        break;
+    case 2:
+        comsOut["r"] = 0;
+        comsOut["g"] = 0;
+        comsOut["b"] = 255;
+        break;
+    default:
+        comsOut["r"] = 0;
+        comsOut["g"] = 0;
+        comsOut["b"] = 0;
+        break;
+    }
+
+}
 
 /*
 //----------------------------- Fonction "Main" -----------------------------
