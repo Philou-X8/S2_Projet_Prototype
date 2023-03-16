@@ -45,7 +45,7 @@ public:
 
 	void startThreads();
 	bool stopThreads();
-
+	void getLevel(int level);
 private:
 	mutex threadLock;
 	thread keyboardComs; // reading from the keyboard
@@ -64,6 +64,7 @@ private:
 	bool recieveComs();
 	std::list<char> decodeController();
 	char buttonPress(int recivedState, bool& buttonState, char map);
+	int level;
 
 };
 

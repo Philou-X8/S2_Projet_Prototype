@@ -149,6 +149,7 @@ ostream& operator <<(ostream& s, MapGrid& mapGrid) {
 				}
 			}
 		}
+
 		s << endl;
 	}
 	return s;

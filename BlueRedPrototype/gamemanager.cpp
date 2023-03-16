@@ -1,6 +1,7 @@
 #include "gamemanager.h"
 
-GameManager::GameManager() {
+GameManager::GameManager(InputManager *inManager) {
+	inputmanager = inManager;
 	int map[20][20] = { 0 };
 	p1 = new Coords();
 	p2 = new Coords();
@@ -23,9 +24,11 @@ GameManager::GameManager() {
 	consoleHideCursor(true);
 
 	showLvlProgress();
+
 }
 
-GameManager::GameManager(int niveau) {
+GameManager::GameManager(int niveau, InputManager* inManager) {
+	inputmanager = inManager;
 	int map[20][20] = { 0 };
 	p1 = new Coords();
 	p2 = new Coords();
@@ -137,4 +140,8 @@ void GameManager::consoleXY(int x, int y)
 void GameManager::consoleHideCursor(bool hide) {
 	cursorInfo.bVisible = !hide;
 	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+}
+
+void GameManager::outputLevel() {
+	inputmanager->getLevel(mapLoader.getLvlProgress());
 }

@@ -186,6 +186,10 @@ char InputManager::buttonPress(int recivedState, bool& buttonState, char map) {
     return 0;
 }
 
+void InputManager::getLevel(int niveau) {
+    level = niveau;
+}
+
 
 /*
 //----------------------------- Fonction "Main" -----------------------------

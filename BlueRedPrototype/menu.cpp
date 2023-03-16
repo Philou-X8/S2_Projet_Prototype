@@ -14,7 +14,7 @@ void MENU::menu(InputManager* inMng) {
         if (choice1 == '1') {
             system("CLS");
             PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
-            GameManager gameWindow;
+            GameManager gameWindow(inputManager);
             char inputchar = 0;
             while (inputchar != 27) {
                 inputchar = inputManager->getInput();
@@ -45,7 +45,7 @@ void MENU::options(void) {
         if (choice2 != 27) {
             system("CLS");
             PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
-            GameManager gameWindow(choice2);
+            GameManager gameWindow(choice2, inputManager);
             gameWindow.mapLoader.ChoosingLevel(choice2);
             char inputchar = 0;
             while (inputchar != 27) {
