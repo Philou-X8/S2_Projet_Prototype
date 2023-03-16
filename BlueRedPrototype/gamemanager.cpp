@@ -85,6 +85,9 @@ void GameManager::inputPlayerAction(char input) {
 	case 'a':
 		mapGrid.moveP1(Coords(-1, 0));	// left
 		break;
+	case 'f':
+		mapGrid.actionRed();
+		break;
 		// ------------------------------- player 2
 	case 'i':
 		mapGrid.moveP2(Coords(0, 1));	// up
@@ -97,6 +100,9 @@ void GameManager::inputPlayerAction(char input) {
 		break;
 	case 'j':
 		mapGrid.moveP2(Coords(-1, 0));	// left
+		break;
+	case 'h':
+		mapGrid.actionBlue();
 		break;
 	default:
 		break;
