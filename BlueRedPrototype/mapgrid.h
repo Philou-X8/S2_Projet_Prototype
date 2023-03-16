@@ -23,8 +23,8 @@ public:
 	Coords& editSize();
 	int moveP1(Coords dir);
 	int moveP2(Coords dir);
-	int actionRed(Coords dir);
-	int actionBlue(Coords dir);
+	int actionRed();
+	int actionBlue();
 	bool mapSolved();
 	friend ostream& operator <<(ostream& s, MapGrid& grid);
 
@@ -35,4 +35,6 @@ private:
 
 	Coords* p1;
 	Coords* p2;
+	Coords p1Dir;
+	Coords p2Dir;
 };

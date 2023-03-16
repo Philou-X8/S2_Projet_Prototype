@@ -51,6 +51,7 @@ Coords& MapGrid::editSize() {
 }
 
 int MapGrid::moveP1(Coords dir) {
+	p1Dir = dir;
 	Coords newPos(*p1 + dir);
 	switch (grid[newPos.x][newPos.y]) {
 	case WALL:
@@ -61,16 +62,18 @@ int MapGrid::moveP1(Coords dir) {
 		if (newPos != *p2) *p1 += dir;
 		return 1;
 	case BOX:
-		return actionRed(dir);
+		//return actionRed();
+		return 0;
 	case GOAL:
 		*p1 += dir;
 		return 2;
 	default:
 		break;
 	}
-	return 1;
+	return 0;
 }
 int MapGrid::moveP2(Coords dir) {
+	p2Dir = dir;
 	Coords newPos(*p2 + dir);
 	switch (grid[newPos.x][newPos.y]) {
 	case WALL:
@@ -81,34 +84,42 @@ int MapGrid::moveP2(Coords dir) {
 		if (newPos != *p1) *p2 += dir;
 		return 1;
 	case BOX:
-		return actionBlue(dir);
+		//return actionBlue();
+		return 0;
 	case GOAL:
 		*p2 += dir;
 		return 2;
 	default:
 		break;
 	}
-	return 1;
+	return 0;
 }
 
-int MapGrid::actionRed(Coords dir) {
-	Coords posBox(*p1 + dir);
-	Coords posBehindBox(posBox + dir);
+int MapGrid::actionRed() {
+	
+	Coords posBox(*p1 + p1Dir);
+	if (grid[posBox.x][posBox.y] != BOX) {
+		return 0;
+	}
+	Coords posBehindBox(posBox + p1Dir);
 	if ((grid[posBehindBox.x][posBehindBox.y] == PATH) && (posBehindBox != *p2)) {
 		grid[posBehindBox.x][posBehindBox.y] = BOX;
 		grid[posBox.x][posBox.y] = PATH;
-		*p1 += dir;
+		*p1 += p1Dir;
 		return 1;
 	}
 	return 0;
 }
-int MapGrid::actionBlue(Coords dir) {
-	Coords posBox(*p2 + dir);
-	Coords posBehindPly(*p2 - dir);
+int MapGrid::actionBlue() {
+	Coords posBox(*p2 + p2Dir);
+	if (grid[posBox.x][posBox.y] != BOX) {
+		return 0;
+	}
+	Coords posBehindPly(*p2 - p2Dir);
 	if ((grid[posBehindPly.x][posBehindPly.y] == PATH) && (posBehindPly != *p1)) {
 		grid[p2->x][p2->y] = BOX;
 		grid[posBox.x][posBox.y] = PATH;
-		*p2 -= dir;
+		*p2 -= p2Dir;
 		return 1;
 	}
 	return 0;
