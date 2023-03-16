@@ -21,11 +21,11 @@ using namespace std;
 void main() {
 
 	InputManager* inputManager = new InputManager();
-	while(true) cout << inputManager->getInput();
+	//while(true) cout << inputManager->getInput();
 	//int temp;
 	//cin >> temp;
-	//MENU menu;
-	//menu.menu(inputManager);
+	MENU menu;
+	menu.menu(inputManager);
 	//menu.menu;
 
 }

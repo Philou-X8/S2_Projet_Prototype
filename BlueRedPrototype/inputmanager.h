@@ -68,6 +68,7 @@ private:
 	json comsIn;
 	json comsOut;
 	bool recieveComs();
+	string newStr;
 	bool sendComs();
 	std::list<char> decodeController();
 	char buttonPress(int recivedState, bool& buttonState, char map);

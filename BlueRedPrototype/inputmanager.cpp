@@ -64,7 +64,7 @@ void InputManager::startThreads() {
         isActiveController = true;
         controllerComs = thread(&InputManager::readController, this);
     }
-    
+    cout << "\nThreads ready\n";
 }
 
 bool InputManager::stopThreads() {
@@ -105,7 +105,8 @@ void InputManager::readController() {
         if (!recieveComs()) {
             continue;
         }
-        std::cout << comsIn.dump() << endl;
+        
+        //std::cout << comsIn.dump() << endl;
         std::list<char> newInput(decodeController());
 
         threadLock.lock();
@@ -121,30 +122,40 @@ void InputManager::readController() {
 }
 
 bool InputManager::recieveComs() {
-    std::cout << "recieving coms\n";
-
     string str_buffer;
     char char_buffer[MSG_MAX_SIZE];
-
-    arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-
+    //Sleep(10);
     int buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-    
-    if (buffer_size > 0) {
-        str_buffer.assign(char_buffer, buffer_size);
-        std::cout << str_buffer << endl;
-        comsIn.clear();
-        comsIn = json::parse(str_buffer);
-        return true;
-    } else {
+    if (buffer_size <= 0) {
         return false;
+    } 
+    bool returnVal = false;
+    str_buffer.assign(char_buffer, buffer_size);
+
+    size_t startChar = str_buffer.find_first_of('{');
+    size_t endChar = str_buffer.find_first_of('\r');
+    if ( (endChar != string::npos) && (newStr.size() > 0) ) {
+        newStr.append(str_buffer, 0, endChar);
+        comsIn.clear();
+        comsIn = json::parse(newStr);
+        returnVal = true;
     }
+    if (startChar != string::npos) {
+        newStr.assign(str_buffer, startChar, string::npos);
+    }
+    else if (endChar == string::npos) {
+        newStr.append(str_buffer);
+    }
+
+    return returnVal;
 }
 bool InputManager::sendComs() {
     //string msg = comsOut.dump();
     //bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());
     //return ret;
-    std::cout << "sending coms\n";
+
+    //std::cout << "sending coms\n";
+
     return arduino->writeSerialPort(
         comsOut.dump().c_str(),
         comsOut.dump().length()
