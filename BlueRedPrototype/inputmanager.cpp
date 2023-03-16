@@ -92,8 +92,17 @@ void InputManager::readController() {
             continue;
         }
 
-        threadLock.lock();
+        std::list<char> newInput(decodeController());
 
+        threadLock.lock();
+        for (char c : newInput) {
+            if (c != 0) {
+                pendingInput.push(c);
+            }
+        }
+        threadLock.unlock();
+        /*
+        threadLock.lock();
         //decode the JSON into variables
         // -----------------------------example
         int tempExample = -1;
@@ -108,8 +117,7 @@ void InputManager::readController() {
             pendingInput.push(inputchar);
         }
         threadLock.unlock();
-
-
+        */
     }
 }
 
@@ -134,7 +142,7 @@ bool InputManager::recieveComs() {
 std::list<char> InputManager::decodeController() {
     std::list<char> inputList;
     int activePlayer;
-    activePlayer = comsIn["actPly"];
+    activePlayer = comsIn["act"];
     
     if (activePlayer == 0) {
         inputList.push_back(buttonPress(comsIn["rst"], controllerState.reload, 'r'));
@@ -177,8 +185,6 @@ char InputManager::buttonPress(int recivedState, bool& buttonState, char map) {
     }
     return 0;
 }
-
-
 
 
 /*
