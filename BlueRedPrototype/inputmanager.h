@@ -43,15 +43,19 @@ public:
 
 	bool connectController();
 
-	char getInput();
+	void updateOutputInfo(int lvl, int ply); // send to controller
+	char getInput(); // recieve from controller
 
 	void startThreads();
 	bool stopThreads();
 
-	void updateOutputInfo(int lvl, int ply);
-	void getLevel(int level);
 private:
-	mutex threadLock;
+	json comsIn;
+	json comsOut;
+
+	/********** Thread management **********/
+	mutex threadLock; // to lock pendingInput
+	queue<char, std::list<char>> pendingInput;
 	thread keyboardComs; // reading from the keyboard
 	thread controllerComs; // reading from the controller
 	void readKeyboard(); // looping thread
@@ -59,20 +63,20 @@ private:
 	bool isActiveKeyboard; // should keep the threads running
 	bool isActiveController; // should keep the threads running
 	
-	bool controllerConnected; //
+	bool controllerConnected; // connection is succesful
 
-	buttonstates keyboardState;
+	buttonstates keyboardState; // unused
 	buttonstates controllerState;
-	queue<char, std::list<char>> pendingInput;
 
-	json comsIn;
-	json comsOut;
-	bool recieveComs();
+	/********** Used by readController() **********/
 	string newStr;
-	bool sendComs();
 	std::list<char> decodeController();
 	char buttonPress(int recivedState, bool& buttonState, char map);
-	int level;
+
+
+	/********** Serial ports **********/
+	bool sendComs(); // serial port communication
+	bool recieveComs(); // serial port communication
 
 };
 

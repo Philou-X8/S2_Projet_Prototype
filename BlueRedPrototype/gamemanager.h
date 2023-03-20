@@ -25,9 +25,6 @@ public:
 	void levelNext();
 	void levelUpdateUI();
 
-	
-	
-	void outputLevel();
 
 private:
 	/******************** game objects ********************/
