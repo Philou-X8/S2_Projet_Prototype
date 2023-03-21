@@ -35,3 +35,7 @@
 /BlueRedPrototype/release
 /BlueRedPrototype/x64
 /.vs
+/*/.vs
+/*/debug
+/*/release
+/*/x64
