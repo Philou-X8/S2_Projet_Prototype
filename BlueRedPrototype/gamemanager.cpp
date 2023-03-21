@@ -65,6 +65,7 @@ void GameManager::gameUpdate(char inputKey) {
 		showLvlProgress();
 	}
 	levelUpdateUI();
+	inputManager->updateOutputInfo(mapLoader.getLvlProgress(), 1);
 }
 void GameManager::inputPlayerAction(char input) {
 	switch (input) {
@@ -154,8 +155,4 @@ void GameManager::consoleXY(int x, int y)
 void GameManager::consoleHideCursor(bool hide) {
 	cursorInfo.bVisible = !hide;
 	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
-}
-
-void GameManager::outputLevel() {
-	inputManager->getLevel(mapLoader.getLvlProgress());
 }

@@ -1,15 +1,11 @@
 #include "inputmanager.h"
 
-//bool SendToSerial(SerialPort* arduino, json j_msg);
-//bool RcvFromSerial(SerialPort* arduino, string& msg);
-
 SerialPort* arduino; //doit etre un objet global!
 
 InputManager::InputManager() {
     //arduino = nullptr;
     isActiveController = false;
     isActiveKeyboard = false;
-    // --------------------------- connect controller
     
     connectController();
     startThreads();
@@ -41,6 +37,30 @@ bool InputManager::connectController() {
     }
     controllerConnected = false;
     return controllerConnected;
+}
+
+void InputManager::updateOutputInfo(int lvl, int ply) {
+    comsOut.clear();
+    comsOut["nb"] = lvl;
+    switch (ply)
+    {
+    case 1:
+        comsOut["r"] = 255;
+        comsOut["g"] = 0;
+        comsOut["b"] = 0;
+        break;
+    case 2:
+        comsOut["r"] = 0;
+        comsOut["g"] = 0;
+        comsOut["b"] = 255;
+        break;
+    default:
+        comsOut["r"] = 0;
+        comsOut["g"] = 0;
+        comsOut["b"] = 0;
+        break;
+    }
+
 }
 
 char InputManager::getInput() {
@@ -97,8 +117,13 @@ void InputManager::readController() {
     char inputchar = 0;
     while (isActiveController) {
         
+        if (!controllerConnected) {
+            Sleep(1000);
+            continue;
+        }
+
         if (!sendComs()) {
-            std::cout << "couldn't send to arduino\n";
+            //std::cout << "couldn't send to arduino\n";
         }
 
         // skip loop if serial port is empty
@@ -121,46 +146,6 @@ void InputManager::readController() {
     }
 }
 
-bool InputManager::recieveComs() {
-    string str_buffer;
-    char char_buffer[MSG_MAX_SIZE];
-    //Sleep(10);
-    int buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-    if (buffer_size <= 0) {
-        return false;
-    } 
-    bool returnVal = false;
-    str_buffer.assign(char_buffer, buffer_size);
-
-    size_t startChar = str_buffer.find_first_of('{');
-    size_t endChar = str_buffer.find_first_of('\r');
-    if ( (endChar != string::npos) && (newStr.size() > 0) ) {
-        newStr.append(str_buffer, 0, endChar);
-        comsIn.clear();
-        comsIn = json::parse(newStr);
-        returnVal = true;
-    }
-    if (startChar != string::npos) {
-        newStr.assign(str_buffer, startChar, string::npos);
-    }
-    else if (endChar == string::npos) {
-        newStr.append(str_buffer);
-    }
-
-    return returnVal;
-}
-bool InputManager::sendComs() {
-    //string msg = comsOut.dump();
-    //bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());
-    //return ret;
-
-    //std::cout << "sending coms\n";
-
-    return arduino->writeSerialPort(
-        comsOut.dump().c_str(),
-        comsOut.dump().length()
-    );
-}
 
 std::list<char> InputManager::decodeController() {
     std::list<char> inputList;
@@ -187,10 +172,34 @@ std::list<char> InputManager::decodeController() {
         inputList.push_back(buttonPress(
             int(comsIn["dir"]) == 4,
             controllerState.left,
-            'h'
+            'j'
         ));
+        inputList.push_back(buttonPress(comsIn["a1"], controllerState.action, 'h'));
+
     }
     else {
+        inputList.push_back(buttonPress(comsIn["rst"], controllerState.reload, 'r'));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 1,
+            controllerState.up,
+            'w'
+        ));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 2,
+            controllerState.down,
+            's'
+        ));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 3,
+            controllerState.right,
+            'd'
+        ));
+        inputList.push_back(buttonPress(
+            int(comsIn["dir"]) == 4,
+            controllerState.left,
+            'a'
+        ));
+        inputList.push_back(buttonPress(comsIn["a1"], controllerState.action, 'f'));
 
     }
     return inputList;
@@ -209,34 +218,43 @@ char InputManager::buttonPress(int recivedState, bool& buttonState, char map) {
     return 0;
 }
 
-void InputManager::getLevel(int niveau) {
-    level = niveau;
-}
 
+bool InputManager::recieveComs() {
+    string str_buffer;
+    char char_buffer[MSG_MAX_SIZE];
+    //Sleep(10);
+    int buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
+    if (buffer_size <= 0) {
+        return false;
+    }
+    bool returnVal = false;
+    str_buffer.assign(char_buffer, buffer_size);
 
-void InputManager::updateOutputInfo(int lvl, int ply) {
-    comsOut.clear();
-    comsOut["nb"] = lvl;
-    switch (ply)
-    {
-    case 1:
-        comsOut["r"] = 255;
-        comsOut["g"] = 0;
-        comsOut["b"] = 0;
-        break;
-    case 2:
-        comsOut["r"] = 0;
-        comsOut["g"] = 0;
-        comsOut["b"] = 255;
-        break;
-    default:
-        comsOut["r"] = 0;
-        comsOut["g"] = 0;
-        comsOut["b"] = 0;
-        break;
+    size_t startChar = str_buffer.find_first_of('{');
+    size_t endChar = str_buffer.find_first_of('\r');
+    if ((endChar != string::npos) && (newStr.size() > 0)) {
+        newStr.append(str_buffer, 0, endChar);
+        comsIn.clear();
+        comsIn = json::parse(newStr);
+        returnVal = true;
+    }
+    if (startChar != string::npos) {
+        newStr.assign(str_buffer, startChar, string::npos);
+    }
+    else if (endChar == string::npos) {
+        newStr.append(str_buffer);
     }
 
+    return returnVal;
 }
+bool InputManager::sendComs() {
+    //std::cout << "sending coms\n";
+    return arduino->writeSerialPort(
+        comsOut.dump().c_str(),
+        comsOut.dump().length()
+    );
+}
+
 
 /*
 //----------------------------- Fonction "Main" -----------------------------
