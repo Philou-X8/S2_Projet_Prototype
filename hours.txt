@@ -3,6 +3,7 @@ hours	jj/mm	name
 2	11-02	p
 2	15-02	p
 2	16-02	p
+relache
 6	09-03	p
 4	14-03	p
 6	16-03	p

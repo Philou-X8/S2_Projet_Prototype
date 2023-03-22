@@ -73,7 +73,7 @@ void GameManager::gameUpdate(char inputKey) {
 	if (cycleCount == 0) {
 		inputManager->updateOutputInfo(
 			mapLoader.getLvlProgress(), 
-			1
+			activePly
 		);
 
 	}
@@ -116,6 +116,12 @@ void GameManager::inputPlayerAction(char input) {
 		break;
 	case 'h':
 		mapGrid.actionBlue();
+		break;
+	case PLY1:
+		activePly = 1;
+		break;
+	case PLY2:
+		activePly = 2;
 		break;
 	default:
 		break;

@@ -58,8 +58,8 @@ void InputManager::updateOutputInfo(int lvl, int ply) {
     {
     case 1:
         comsOut["r"] = 255;
-        comsOut["g"] = 100;
-        comsOut["b"] = 100;
+        comsOut["g"] = 0;
+        comsOut["b"] = 0;
         break;
     case 2:
         comsOut["r"] = 0;
@@ -276,7 +276,9 @@ bool InputManager::recieveComs() {
         newStr += '}';
         comsIn.clear();
         //cout << "completed string: " << newStr << endl;
+        
         comsIn = json::parse(newStr);
+        newStr.clear();
         returnVal = true;
         
     }
@@ -302,84 +304,3 @@ bool InputManager::sendComs() {
     return success;
 }
 
-
-/*
-//----------------------------- Fonction "Main" -----------------------------
-int main() {
-    
-
-    string raw_msg;
-    // Structure de donnees JSON pour envoie et reception
-    int led_state = 1;
-    json j_msg_send, j_msg_rcv;
-
-    // Boucle pour tester la communication bidirectionnelle Arduino-PC
-    for (int i = 0; true; i++) {
-        // Envoie message Arduino
-        j_msg_send["led"] = led_state;
-        if (!SendToSerial(arduino, j_msg_send)) {
-            cerr << "Erreur lors de l'envoie du message. " << endl;
-        }
-        // Reception message Arduino
-        j_msg_rcv.clear(); // effacer le message precedent
-        if (!RcvFromSerial(arduino, raw_msg)) {
-            cerr << "Erreur lors de la reception du message. " << endl;
-        }
-
-
-        // Impression du message de l'Arduino si valide
-        if (raw_msg.size() > 0) {
-            //cout << "raw_msg: " << raw_msg << endl;  // debug
-            // Transfert du message en json
-            j_msg_rcv = json::parse(raw_msg);
-
-            int potentionmeter = 0;
-            int buttonState = 0;
-            potentionmeter = j_msg_rcv["analog"].get<int>();
-            buttonState = j_msg_rcv["boutton"].get<int>();
-            cout << "potentionmeter: " << potentionmeter << " boutton: " << buttonState << endl;
-            //Serial.print("potentionmeter: \n");
-
-            //cout << "Message de l'Arduino: " << j_msg_rcv << endl;
-
-        }
-
-
-        //Changement de l'etat led
-        led_state = !led_state;
-
-        // Bloquer le fil pour environ 1 sec
-        Sleep(200); // 1000ms
-    }
-    return 0;
-}
-
-*/
-
-/*
-//---------------------------Definition de fonctions ------------------------
-bool SendToSerial(SerialPort* arduino, json j_msg) {
-    // Return 0 if error
-    string msg = j_msg.dump();
-    bool ret = arduino->writeSerialPort(msg.c_str(), msg.length());
-    return ret;
-}
-*/
-
-/*
-bool RcvFromSerial(SerialPort* arduino, string& msg) {
-
-    // Message output in msg
-    string str_buffer;
-    char char_buffer[MSG_MAX_SIZE];
-    int buffer_size;
-
-    msg.clear(); // clear string
-
-    buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
-    str_buffer.assign(char_buffer, buffer_size);
-    msg.append(str_buffer);
-
-    return true;
-}
-*/

@@ -6,16 +6,14 @@
 #include <mutex>
 #include <list>
 #include <queue>
-
 #include <conio.h>
-
 #include "include/serial/SerialPort.hpp"
 #include "include/json.hpp"
+
 using json = nlohmann::json;
+
 #define BAUD 9600           // Frequence de transmission serielle
 #define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
-
-
 
 using namespace std;
 
@@ -34,7 +32,7 @@ struct buttonstates {
 	bool reload = ARMED;
 	bool menu = ARMED;
 	int dir = 0;
-	char ply = PLY2;
+	char ply = PLY1;
 };
 
 class InputManager
