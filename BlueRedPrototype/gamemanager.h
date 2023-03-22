@@ -30,9 +30,11 @@ private:
 	/******************** game objects ********************/
 	Coords* p1; // player 1 coords
 	Coords* p2; // player 2 coords
-
+	int activePly;
 	MapGrid mapGrid;
 	MapLoader mapLoader;
+
+	int cycleCount;
 
 	/******************** input system ********************/
 	InputManager* inputManager;

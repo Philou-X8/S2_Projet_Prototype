@@ -12,7 +12,7 @@
 #include "include/serial/SerialPort.hpp"
 #include "include/json.hpp"
 using json = nlohmann::json;
-#define BAUD 14400           // Frequence de transmission serielle
+#define BAUD 9600           // Frequence de transmission serielle
 #define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
@@ -21,6 +21,9 @@ using namespace std;
 
 #define ACTIVE 1
 #define ARMED 0
+
+const char PLY1 = 't';
+const char PLY2 = 'y';
 
 struct buttonstates {
 	bool up = ARMED;
@@ -31,6 +34,7 @@ struct buttonstates {
 	bool reload = ARMED;
 	bool menu = ARMED;
 	int dir = 0;
+	char ply = PLY2;
 };
 
 class InputManager

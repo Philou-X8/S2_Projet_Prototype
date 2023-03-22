@@ -7,6 +7,7 @@ InputManager::InputManager() {
     isActiveController = false;
     isActiveKeyboard = false;
 
+    newStr.clear();
     //jsonOut.lock();
     comsOut["nb"] = 0;
     comsOut["r"] = 255;
@@ -50,15 +51,15 @@ bool InputManager::connectController() {
 
 void InputManager::updateOutputInfo(int lvl, int ply) {
     //jsonOut.lock();
-    comsOut.clear(); // should remove
+    comsOut.clear(); 
     int oddLvl = lvl % 2;
-    comsOut["nb"] = oddLvl;
+    comsOut["nb"] = lvl;
     switch (ply)
     {
     case 1:
         comsOut["r"] = 255;
-        comsOut["g"] = 0;
-        comsOut["b"] = 0;
+        comsOut["g"] = 100;
+        comsOut["b"] = 100;
         break;
     case 2:
         comsOut["r"] = 0;
@@ -71,7 +72,7 @@ void InputManager::updateOutputInfo(int lvl, int ply) {
         comsOut["b"] = 0;
         break;
     }
-    cout << "Updated coms: " << comsOut.dump() << endl;
+    //cout << "Updated coms: " << comsOut.dump() << endl;
     //jsonOut.unlock();
 
     sendComs();
@@ -127,19 +128,31 @@ void InputManager::readKeyboard() {
 	}
 }
 
+void flushSerial() {
+
+    char char_buffer[MSG_MAX_SIZE];
+    int buffer_size = MSG_MAX_SIZE;
+    while (buffer_size > 25) {
+        buffer_size = arduino->readSerialPort(char_buffer, MSG_MAX_SIZE);
+    }
+    
+}
+
 void InputManager::readController() {
     char inputchar = 0;
+    flushSerial();
+    //Sleep(200);
     while (isActiveController) {
         //Sleep(20);
         if (!controllerConnected) {
             Sleep(1000);
             continue;
         }
-
-        //if (!sendComs()) {
-        //    std::cout << "couldn't send to arduino\n";
-        //}
-
+        /*
+        if (!sendComs()) {
+            std::cout << "couldn't send to arduino\n";
+        }
+        */
         // skip loop if serial port is empty
         if (!recieveComs()) {
             continue;
@@ -167,7 +180,17 @@ std::list<char> InputManager::decodeController() {
     int activePlayer;
     activePlayer = comsIn["act"];
     
-    if (activePlayer == 0) {
+    if (activePlayer == 2 && controllerState.ply == PLY1) {
+        controllerState.ply = PLY2;
+        inputList.push_back(controllerState.ply);
+    }
+    else if (activePlayer == 1 && controllerState.ply == PLY2) {
+        controllerState.ply = PLY1;
+        inputList.push_back(controllerState.ply);
+    }
+    
+    
+    if (activePlayer == 2) {
         inputList.push_back(buttonPress(comsIn["rst"], controllerState.reload, 'r'));
         inputList.push_back(buttonPress(
             int(comsIn["dir"]) == 1,
@@ -248,7 +271,7 @@ bool InputManager::recieveComs() {
 
     size_t startChar = str_buffer.find_first_of('{');
     size_t endChar = str_buffer.find_first_of('}');
-    if ((endChar != string::npos) && (newStr.size() > 0)) { // json completed
+    if ((endChar != string::npos) && (newStr.size() > 40)) { // json completed
         newStr.append(str_buffer, 0, endChar);
         newStr += '}';
         comsIn.clear();
@@ -270,7 +293,7 @@ bool InputManager::sendComs() {
     //std::cout << "sending coms\n";
     //Sleep(50);
     //jsonOut.lock();
-    cout << "trying to send: " << comsOut.dump() << "----\n";
+    //cout << "trying to send: " << comsOut.dump() << "----\n";
     bool success = arduino->writeSerialPort(
         comsOut.dump().c_str(),
         comsOut.dump().length()

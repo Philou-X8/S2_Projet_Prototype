@@ -7,6 +7,7 @@
 #define SPAWN1 5 // red spawn
 #define SPAWN2 6 // blue spawn
 
+
 const char UP = 'u';
 const char DOWN = 'd';
 const char RIGHT = 'r';

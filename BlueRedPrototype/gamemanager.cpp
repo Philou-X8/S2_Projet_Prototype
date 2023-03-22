@@ -7,6 +7,8 @@ GameManager::GameManager(InputManager *inManager) {
 	p2 = new Coords();
 	Coords mapSize(19, 19);
 
+	cycleCount = 0;
+
 	// load map from file
 	mapLoader;
 	mapLoader.nextLvl(&map, p1, p2, mapSize);
@@ -59,13 +61,23 @@ GameManager::~GameManager() {
 }
 
 void GameManager::gameUpdate(char inputKey) {
+	cycleCount = (cycleCount + 1) % 5;
+	
 	inputPlayerAction(inputKey);
 	if (levelState()) {
 		levelNext();
 		showLvlProgress();
 	}
 	levelUpdateUI();
-	inputManager->updateOutputInfo(mapLoader.getLvlProgress(), 1);
+	
+	if (cycleCount == 0) {
+		inputManager->updateOutputInfo(
+			mapLoader.getLvlProgress(), 
+			1
+		);
+
+	}
+
 }
 void GameManager::inputPlayerAction(char input) {
 	switch (input) {

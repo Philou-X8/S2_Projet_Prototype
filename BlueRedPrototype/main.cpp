@@ -25,11 +25,17 @@ void main() {
 	int bruh = 1;
 	while (false) {
 		bruh++;
-		bruh = bruh % 1000;
+		bruh = bruh % 99;
 		inputManager->updateOutputInfo(bruh, 1);
 		Sleep(1000);
 	}
-	
+	while (false) {
+		bruh++;
+		bruh = bruh % 99;
+		if (bruh == 0) inputManager->updateOutputInfo(88, 1);
+		char key = inputManager->getInput();
+		if(key != 0) cout<< key << ' ';
+	}
 	MENU menu;
 	menu.menu(inputManager);
 	//menu.menu;
