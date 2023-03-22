@@ -22,11 +22,19 @@ void main() {
 
 	InputManager* inputManager = new InputManager();
 	//while(true) cout << inputManager->getInput();
-	//int temp;
-	//cin >> temp;
+	int bruh = 1;
+	while (false) {
+		bruh++;
+		bruh = bruh % 1000;
+		inputManager->updateOutputInfo(bruh, 1);
+		Sleep(1000);
+	}
+	
 	MENU menu;
 	menu.menu(inputManager);
 	//menu.menu;
 
+	int temp;
+	cin >> temp;
 }
 

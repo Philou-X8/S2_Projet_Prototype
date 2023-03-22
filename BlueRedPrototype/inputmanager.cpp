@@ -6,6 +6,13 @@ InputManager::InputManager() {
     //arduino = nullptr;
     isActiveController = false;
     isActiveKeyboard = false;
+
+    //jsonOut.lock();
+    comsOut["nb"] = 0;
+    comsOut["r"] = 255;
+    comsOut["g"] = 0;
+    comsOut["b"] = 0;
+    //jsonOut.unlock();
     
     connectController();
     startThreads();
@@ -25,6 +32,7 @@ bool InputManager::connectController() {
     string comPort = "COM1";
     for (int i = '1'; i <= '9'; i++) {
         comPort[3] = i;
+        cout << "attemping port " << comPort << endl;
         arduino = new SerialPort(comPort.c_str(), BAUD);
         if (arduino->isConnected()) {
             controllerConnected = true;
@@ -32,6 +40,7 @@ bool InputManager::connectController() {
             return controllerConnected;
         }
         else {
+            std::cout << "failed to connect to " << comPort << endl;
             delete arduino;
         }
     }
@@ -40,8 +49,10 @@ bool InputManager::connectController() {
 }
 
 void InputManager::updateOutputInfo(int lvl, int ply) {
-    comsOut.clear();
-    comsOut["nb"] = lvl;
+    //jsonOut.lock();
+    comsOut.clear(); // should remove
+    int oddLvl = lvl % 2;
+    comsOut["nb"] = oddLvl;
     switch (ply)
     {
     case 1:
@@ -60,7 +71,10 @@ void InputManager::updateOutputInfo(int lvl, int ply) {
         comsOut["b"] = 0;
         break;
     }
+    cout << "Updated coms: " << comsOut.dump() << endl;
+    //jsonOut.unlock();
 
+    sendComs();
 }
 
 char InputManager::getInput() {
@@ -116,15 +130,15 @@ void InputManager::readKeyboard() {
 void InputManager::readController() {
     char inputchar = 0;
     while (isActiveController) {
-        
+        //Sleep(20);
         if (!controllerConnected) {
             Sleep(1000);
             continue;
         }
 
-        if (!sendComs()) {
-            //std::cout << "couldn't send to arduino\n";
-        }
+        //if (!sendComs()) {
+        //    std::cout << "couldn't send to arduino\n";
+        //}
 
         // skip loop if serial port is empty
         if (!recieveComs()) {
@@ -136,6 +150,7 @@ void InputManager::readController() {
 
         threadLock.lock();
         for (char c : newInput) {
+            //cout << c << endl;
             if (c != 0) {
                 pendingInput.push(c);
             }
@@ -229,19 +244,23 @@ bool InputManager::recieveComs() {
     }
     bool returnVal = false;
     str_buffer.assign(char_buffer, buffer_size);
+    //cout << str_buffer << endl;
 
     size_t startChar = str_buffer.find_first_of('{');
-    size_t endChar = str_buffer.find_first_of('\r');
-    if ((endChar != string::npos) && (newStr.size() > 0)) {
+    size_t endChar = str_buffer.find_first_of('}');
+    if ((endChar != string::npos) && (newStr.size() > 0)) { // json completed
         newStr.append(str_buffer, 0, endChar);
+        newStr += '}';
         comsIn.clear();
+        //cout << "completed string: " << newStr << endl;
         comsIn = json::parse(newStr);
         returnVal = true;
+        
     }
-    if (startChar != string::npos) {
+    if (startChar != string::npos) { // start new json
         newStr.assign(str_buffer, startChar, string::npos);
     }
-    else if (endChar == string::npos) {
+    else if (endChar == string::npos) { // json ongoing
         newStr.append(str_buffer);
     }
 
@@ -249,10 +268,15 @@ bool InputManager::recieveComs() {
 }
 bool InputManager::sendComs() {
     //std::cout << "sending coms\n";
-    return arduino->writeSerialPort(
+    //Sleep(50);
+    //jsonOut.lock();
+    cout << "trying to send: " << comsOut.dump() << "----\n";
+    bool success = arduino->writeSerialPort(
         comsOut.dump().c_str(),
         comsOut.dump().length()
     );
+    //jsonOut.unlock();
+    return success;
 }
 
 

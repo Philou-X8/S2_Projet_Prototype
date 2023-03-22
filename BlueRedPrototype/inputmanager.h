@@ -12,7 +12,7 @@
 #include "include/serial/SerialPort.hpp"
 #include "include/json.hpp"
 using json = nlohmann::json;
-#define BAUD 9600           // Frequence de transmission serielle
+#define BAUD 14400           // Frequence de transmission serielle
 #define MSG_MAX_SIZE 1024   // Longueur maximale d'un message
 
 
@@ -33,8 +33,6 @@ struct buttonstates {
 	int dir = 0;
 };
 
-
-
 class InputManager
 {
 public:
@@ -50,6 +48,7 @@ public:
 	bool stopThreads();
 
 private:
+	mutex jsonOut;
 	json comsIn;
 	json comsOut;
 
