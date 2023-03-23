@@ -12,35 +12,17 @@
 #include "mapgrid.h"
 #include "gamemanager.h"
 #include "menu.h"
+//#include "inputmanager.h"
 
 #pragma comment(lib, "Winmm.lib")
 
 using namespace std;
 
-/*
-void gotoxy(int x, int y)
-{
-	static HANDLE h = NULL;
-	if (!h)
-		h = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD c = { x, y };
-	SetConsoleCursorPosition(h, c);
-}
-
-void ShowCursor(bool show) {
-	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO cursorInfo;
-	GetConsoleCursorInfo(out, &cursorInfo);
-	cursorInfo.bVisible = show;
-	SetConsoleCursorInfo(out, &cursorInfo);
-}
-*/
-
 void main() {
 
+	InputManager* inputManager = new InputManager();
 	MENU menu;
-	menu.menu();
-
-
+	menu.menu(inputManager);
+	//menu.menu;
 
 }
