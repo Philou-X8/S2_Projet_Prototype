@@ -47,9 +47,9 @@ private:
 	InputManager* inputManager;
 	void inputPlayerAction(char input);
 	
-	/******************** display func ********************/
+	/******************** display func *******************
 	void showLvlProgress();
-
+	*/
 	/******************** console usage ********************/
 	HANDLE consoleHandle;
 	CONSOLE_CURSOR_INFO cursorInfo;
