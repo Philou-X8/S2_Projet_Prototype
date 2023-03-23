@@ -1,5 +1,3 @@
-#pragma once
-
 
 #include <iostream>
 #include <conio.h>
@@ -24,14 +22,23 @@ public:
 	void levelReload();
 	void levelNext();
 	void levelUpdateUI();
+	int updateMoves();
+	void ResetMovesCounter();
 
+
+	/******************** display func ********************/
+	void showLvlProgress();
 
 private:
+	
+	int moves = 0;
+
 	/******************** game objects ********************/
 	Coords* p1; // player 1 coords
 	Coords* p2; // player 2 coords
 	int activePly;
 	MapGrid mapGrid;
+	
 	MapLoader mapLoader;
 
 	int cycleCount;

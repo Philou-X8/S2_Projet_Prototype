@@ -43,4 +43,3 @@ void main() {
 	int temp;
 	cin >> temp;
 }
-

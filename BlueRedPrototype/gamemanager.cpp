@@ -1,7 +1,10 @@
+
 #include "gamemanager.h"
 
 GameManager::GameManager(InputManager *inManager) {
+	
 	inputManager = inManager;
+	moves = 0;
 	int map[20][20] = { 0 };
 	p1 = new Coords();
 	p2 = new Coords();
@@ -20,6 +23,9 @@ GameManager::GameManager(InputManager *inManager) {
 	// display grid
 	std::cout << mapGrid;
 
+	//play de beat
+	PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
+
 	// initialize some console variables
 	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
@@ -30,6 +36,7 @@ GameManager::GameManager(InputManager *inManager) {
 }
 
 GameManager::GameManager(int niveau, InputManager* inManager) {
+	moves = 0;
 	inputManager = inManager;
 	int map[20][20] = { 0 };
 	p1 = new Coords();
@@ -47,6 +54,9 @@ GameManager::GameManager(int niveau, InputManager* inManager) {
 	// display grid
 	std::cout << mapGrid;
 
+	//play de beat
+	PlaySound(TEXT("cyborg-ninja.wav"), NULL, SND_FILENAME | SND_ASYNC);
+
 	// initialize some console variables
 	consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	GetConsoleCursorInfo(consoleHandle, &cursorInfo);
@@ -63,6 +73,7 @@ GameManager::~GameManager() {
 void GameManager::gameUpdate(char inputKey) {
 	cycleCount = (cycleCount + 1) % 5;
 	
+
 	inputPlayerAction(inputKey);
 	if (levelState()) {
 		levelNext();
@@ -80,6 +91,7 @@ void GameManager::gameUpdate(char inputKey) {
 
 }
 void GameManager::inputPlayerAction(char input) {
+
 	switch (input) {
 		// ------------------------------- menus
 	case 'r':
@@ -88,15 +100,19 @@ void GameManager::inputPlayerAction(char input) {
 		// ------------------------------- player 1
 	case 'w':
 		mapGrid.moveP1(Coords(0, 1));	// up
+		updateMoves();
 		break;
 	case 's':
 		mapGrid.moveP1(Coords(0, -1));	// down
+		updateMoves();
 		break;
 	case 'd':
 		mapGrid.moveP1(Coords(1, 0));	// right
+		updateMoves();
 		break;
 	case 'a':
 		mapGrid.moveP1(Coords(-1, 0));	// left
+		updateMoves();
 		break;
 	case 'f':
 		mapGrid.actionRed();
@@ -104,15 +120,19 @@ void GameManager::inputPlayerAction(char input) {
 		// ------------------------------- player 2
 	case 'i':
 		mapGrid.moveP2(Coords(0, 1));	// up
+		updateMoves();
 		break;
 	case 'k':
 		mapGrid.moveP2(Coords(0, -1));	// down
+		updateMoves();
 		break;
 	case 'l':
 		mapGrid.moveP2(Coords(1, 0));	// right
+		updateMoves();
 		break;
 	case 'j':
 		mapGrid.moveP2(Coords(-1, 0));	// left
+		updateMoves();
 		break;
 	case 'h':
 		mapGrid.actionBlue();
@@ -141,6 +161,9 @@ void GameManager::levelSet(int lvl) {
 	consoleHideCursor(true);
 }
 void GameManager::levelReload() {
+
+	ResetMovesCounter();
+
 	int map[20][20] = { 0 };
 	Coords mapSize(19, 19);
 	mapLoader.resetLvl(&map, p1, p2, mapSize);
@@ -148,6 +171,9 @@ void GameManager::levelReload() {
 	consoleHideCursor(true);
 }
 void GameManager::levelNext() {
+
+	ResetMovesCounter();
+	//gestion map
 	int map[20][20] = { 0 };
 	Coords mapSize(19, 19);
 	mapLoader.nextLvl(&map, p1, p2, mapSize);
@@ -155,13 +181,17 @@ void GameManager::levelNext() {
 	consoleHideCursor(true);
 }
 void GameManager::levelUpdateUI() {
+
 	consoleXY(0, 0);
 	std::cout << mapGrid;
+	
 }
 
 void GameManager::showLvlProgress() {
+
 	consoleXY(0, 22);
-	cout << "Current level: (level " << mapLoader.getLvlProgress() << ")";
+	cout << "Current level: (level " << mapLoader.getLvlProgress() << ")\n";
+	cout << "Moves :" << moves;
 	consoleXY(0, 0);
 }
 
@@ -173,4 +203,23 @@ void GameManager::consoleXY(int x, int y)
 void GameManager::consoleHideCursor(bool hide) {
 	cursorInfo.bVisible = !hide;
 	SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+}
+
+int GameManager::updateMoves() {
+	consoleXY(0, 23);
+	cout << "                                  ";
+	moves += 1;
+	consoleXY(0, 23);
+	cout << "Moves :" << moves;
+	consoleXY(0, 0);
+	return moves;
+}
+
+void GameManager::ResetMovesCounter() {
+	//reinit des moves a chaque niveaux
+	moves = 0;
+	consoleXY(0, 23);
+	cout << "                                  ";
+	consoleXY(0, 23);
+	cout << "Moves :" << moves;
 }

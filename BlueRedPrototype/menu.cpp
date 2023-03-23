@@ -21,6 +21,8 @@ void MENU::menu(InputManager* inMng) {
                 gameWindow.gameUpdate(inputchar);
             }
             inputManager->stopThreads();
+            
+            //stop the beat
             PlaySound(NULL, NULL, SND_PURGE);
         }
 
@@ -53,6 +55,8 @@ void MENU::options(void) {
                 gameWindow.gameUpdate(inputchar);
             }
             inputManager->stopThreads();
+            
+            //stop the beat
             PlaySound(NULL, NULL, SND_PURGE);
         }
 
